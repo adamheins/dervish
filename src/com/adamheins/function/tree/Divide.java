@@ -1,6 +1,6 @@
 package com.adamheins.function.tree;
 
-public class Divide extends Node {
+public class Divide extends Function {
 
     public Divide(int bracketDepth) {
         super("/", Precedence.MULTIPLICATION, Associativity.LEFT, bracketDepth);

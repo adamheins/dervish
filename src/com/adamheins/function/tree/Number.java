@@ -2,29 +2,25 @@ package com.adamheins.function.tree;
 
 import java.util.Map;
 
-public class Number extends Node {
+public class Number extends Function {
 
-    public Number(String value, int bracketDepth) {
-        super(value, Precedence.NUMBER, Associativity.LEFT, bracketDepth);
+    public Number(String value) {
+        super(value, Precedence.NUMBER, Associativity.LEFT);
     }
 
     
     @Override
-    public void differentiate(String var, ExpressionTree derivative) {
+    public void differentiate(String var, Function derivative) {
         
         // Derivative of a constant value is 0.
-        derivative.add(new Number("0", bracketDepth));
+        derivative.add(new Number("0"));
     }
     
     
     @Override
-    public Node evaluate(Map<String, Double> varMap) {
-        return new Number(value, bracketDepth);
-    }
-
-    
-    @Override
-    public String toString() {
-        return value;
+    public Function evaluate(Map<String, Function> varMap) {
+        
+        // Return a copy of this number.
+        return new Number(value);
     }
 }

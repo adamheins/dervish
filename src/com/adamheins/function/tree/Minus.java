@@ -3,7 +3,7 @@ package com.adamheins.function.tree;
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class Minus extends Node {
+public class Minus extends Function {
 
     public Minus(int bracketDepth) {
         super("-", Precedence.ADDITION, Associativity.LEFT, bracketDepth);
@@ -11,11 +11,11 @@ public class Minus extends Node {
     
 
     @Override
-    public Node evaluate(Map<String, Double> varMap) {
+    public Function evaluate(Map<String, Double> varMap) {
         
         // Evaluate children.
-        Node first = getFirstChild().evaluate(varMap);
-        Node second = getSecondChild().evaluate(varMap);
+        Function first = getFirstChild().evaluate(varMap);
+        Function second = getSecondChild().evaluate(varMap);
         
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
@@ -40,7 +40,7 @@ public class Minus extends Node {
             }
         }
         
-        Node me = new Minus(bracketDepth);
+        Function me = new Minus(bracketDepth);
         me.first = first;
         me.second = second;
         me.parent = this.parent;
@@ -50,7 +50,7 @@ public class Minus extends Node {
 
     
     @Override
-    public void differentiate(String var, ExpressionTree function) {
+    public void differentiate(String var, Function function) {
         getFirstChild().differentiate(var, function);
         function.add(new Minus(bracketDepth));
         getSecondChild().differentiate(var, function);

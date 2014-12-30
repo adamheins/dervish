@@ -3,7 +3,7 @@ package com.adamheins.function.tree;
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class Multiply extends Node {
+public class Multiply extends Function {
 
     public Multiply(int bracketDepth) {
         super("*", Precedence.MULTIPLICATION, Associativity.LEFT, bracketDepth);
@@ -11,7 +11,7 @@ public class Multiply extends Node {
 
     
     @Override
-    public void differentiate(String var, ExpressionTree function) {
+    public void differentiate(String var, Function function) {
         
         getFirstChild().differentiate(var, function);
         function.add(new Multiply(bracketDepth));
@@ -26,11 +26,11 @@ public class Multiply extends Node {
     
     
     @Override
-    public Node evaluate(Map<String, Double> varMap) {
+    public Function evaluate(Map<String, Function> varMap) {
         
         // Evaluate children.
-        Node first = getFirstChild().evaluate(varMap);
-        Node second = getSecondChild().evaluate(varMap);
+        Function first = getFirstChild().evaluate(varMap);
+        Function second = getSecondChild().evaluate(varMap);
         
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
@@ -52,7 +52,7 @@ public class Multiply extends Node {
         }
 
         
-        Node me = new Multiply(bracketDepth);
+        Function me = new Multiply(bracketDepth);
         me.first = first;
         me.second = second;
         me.parent = this.parent;

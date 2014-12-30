@@ -1,6 +1,6 @@
 package com.adamheins.function.tree;
 
-public class Exponent extends Node {
+public class Exponent extends Function {
 
     public Exponent(int bracketDepth) {
         super("^", Precedence.EXPONENTIATION, Associativity.RIGHT, bracketDepth);

@@ -4,33 +4,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
- * 1. Zero terms need to be handled:
- * - if parent of a zero is a multiply operation, we can replace the whole multiply operation
- *   with a zero
- * - if parent of a zero is a plus/minus operation, we can replace the whole operation with the
- *   non-zero term
- *   
- * 2. Evaluate and toString() would once again be one and the same. Evaluate would give a string,
- *    which is the most simplified version of the function, given the Map of variables
+ * root issue
+ * possible to add values without storing precedence?
+ * difference between the way differentiation and evaluation is performed
+ * possibly add a boolean negative field to variables OR simply add a unary neg operator
+ * problem with using BigDecimal is that it doesn't support trig/log etc
  * 
+ * possibly use some kind of FunctionIterator when parsing
  */
 
 public class Main {
 
     public static void main(String[] args) {
         
-        ExpressionTree expression = new ExpressionTree();
-        expression.add(new Number("5", 0));
-        expression.add(new Multiply(0));
-        expression.add(new Number("2", 0));
-        expression.add(new Plus(0));
-        expression.add(new Variable("x", 0));
+        FunctionBuilder fb = new FunctionBuilder();
         
-        Map<String, Double> varMap = new HashMap<>();
-        varMap.put("x", 3.0);
+        fb.add(new Number("5"), 0);
+        fb.add(new Plus(), 0);
+        fb.add(new Number("2"), 0);
+        fb.add(new Plus(), 0);
+        fb.add(new Variable("x"), 0);
         
-        ExpressionTree result = expression.differentiate("x");
-        System.out.println(result);
+        Function function = fb.getRoot();
+        
+        Map<String, Function> varMap = new HashMap<>();
+        varMap.put("x", new Number("3"));
+        
+        System.out.println(function.evaluate(varMap));
     }
 
 }

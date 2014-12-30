@@ -3,57 +3,52 @@ package com.adamheins.function.tree;
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class Plus extends Node {
+public class Plus extends Function {
 
-    public Plus(int bracketDepth) {
-        super("+", Precedence.ADDITION, Associativity.LEFT, bracketDepth);
+    public Plus() {
+        super("+", Precedence.ADDITION, Associativity.LEFT);
     }
 
 
     @Override
-    public void differentiate(String var, ExpressionTree function) {
+    public void differentiate(String var, Function function) {
 
         getFirstChild().differentiate(var, function);
-        function.add(new Plus(bracketDepth));
+        function.add(new Plus());
         getSecondChild().differentiate(var, function);
     }
     
     
     @Override
-    public Node evaluate(Map<String, Double> varMap) {
+    public Function evaluate(Map<String, Function> varMap) {
         
         // Evaluate children.
-        Node first = getFirstChild().evaluate(varMap);
-        Node second = getSecondChild().evaluate(varMap);
+        Function first = getFirstChild().evaluate(varMap);
+        Function second = getSecondChild().evaluate(varMap);
         
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
             BigDecimal firstValue = new BigDecimal(first.value);
             BigDecimal secondValue = new BigDecimal(second.value);
             BigDecimal result = firstValue.add(secondValue);
-            return new Number(result.toString(), bracketDepth);
+            return new Number(result.toString());
         }
         
         // If one of the children is equal to zero, there is no point having it in the expression.
         if (first instanceof Number) {
             BigDecimal firstValue = new BigDecimal(first.value);
-            if (firstValue.equals(BigDecimal.ZERO)) {
-                second.parent = this.parent;
+            if (firstValue.equals(BigDecimal.ZERO))
                 return second;
-            }
         } else if (second instanceof Number) {
             BigDecimal secondValue = new BigDecimal(second.value);
-            if (secondValue.equals(BigDecimal.ZERO)) {
-                first.parent = this.parent;
+            if (secondValue.equals(BigDecimal.ZERO))
                 return first;
-            }
         }
         
-        Node me = new Plus(bracketDepth);
-        me.first = first;
-        me.second = second;
-        me.parent = this.parent;
-
+        Function me = new Plus();
+        me.setFirstChild(first);
+        me.setSecondChild(second);
+        
         return me;
     }
 }

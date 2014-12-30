@@ -14,7 +14,7 @@ public class Tests {
      */
     @Test
     public void testAddition() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Number("2", 0));
         expression.add(new Plus(0));
         expression.add(new Number("3", 0));
@@ -29,7 +29,7 @@ public class Tests {
      */
     @Test
     public void testSubtraction() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Number("10", 0));
         expression.add(new Minus(0));
         expression.add(new Number("7", 0));
@@ -45,7 +45,7 @@ public class Tests {
      */
     @Test
     public void testLeftAssociativity() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Number("7", 0));
         expression.add(new Minus(0));
         expression.add(new Number("3", 0));
@@ -60,7 +60,7 @@ public class Tests {
      */
     @Test
     public void testMultiplication() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Number("10", 0));
         expression.add(new Multiply(0));
         expression.add(new Number("10", 0));
@@ -75,7 +75,7 @@ public class Tests {
      */
     @Test
     public void testDivision() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Number("16", 0));
         expression.add(new Divide(0));
         expression.add(new Number("4", 0));
@@ -88,7 +88,7 @@ public class Tests {
      */
     @Test
     public void testPow() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Number("9", 0));
         expression.add(new Exponent(0));
         expression.add(new Number("2", 0));
@@ -104,7 +104,7 @@ public class Tests {
      */
     @Test
     public void testRightAssociativity() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Number("2", 0));
         expression.add(new Exponent(0));
         expression.add(new Number("3", 0));
@@ -119,7 +119,7 @@ public class Tests {
      */
     @Test
     public void testMultipleBinaryOperators() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Number("2", 0));
         expression.add(new Plus(0));
         expression.add(new Number("3", 0));
@@ -136,7 +136,7 @@ public class Tests {
      */
     @Test
     public void testSin() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Sin(0));
         expression.add(new Number("1.57079632679489", 0));
         Assert.assertEquals(1, expression.evaluate(), ERROR);
@@ -148,7 +148,7 @@ public class Tests {
      */
     @Test
     public void testCos() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Cos(0));
         expression.add(new Number("0", 0));
         Assert.assertEquals(1, expression.evaluate(), ERROR);
@@ -160,7 +160,7 @@ public class Tests {
      */
     @Test
     public void testTan() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Tan(0));
         expression.add(new Number("0.78539816339744", 0));
         Assert.assertEquals(1, expression.evaluate(), ERROR);
@@ -172,7 +172,7 @@ public class Tests {
      */
     @Test
     public void testMultipleUnaryOperators() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Sin(0));
         expression.add(new Sin(0));
         expression.add(new Number("1", 0));
@@ -185,7 +185,7 @@ public class Tests {
      */
     @Test
     public void testUnaryAndBinaryOperators() {
-        ExpressionTree expression = new ExpressionTree();      
+        Function expression = new Function();      
         expression.add(new Number("2", 0));
         expression.add(new Plus(0));
         expression.add(new Sin(0));
@@ -201,7 +201,7 @@ public class Tests {
      */
     @Test
     public void testBrackets() {
-        ExpressionTree expression = new ExpressionTree();       
+        Function expression = new Function();       
         expression.add(new Number("2", 1));
         expression.add(new Plus(1));
         expression.add(new Number("3", 1));
