@@ -22,13 +22,18 @@ public class Main {
         fb.add(new Number("5"), 0);
         fb.add(new Plus(), 0);
         fb.add(new Number("2"), 0);
-        fb.add(new Plus(), 0);
+        fb.add(new Multiply(), 0);
         fb.add(new Variable("x"), 0);
         
-        Function function = fb.getRoot();
+        Function function = fb.getFunction();
+        
+        FunctionBuilder sub = new FunctionBuilder();
+        sub.add(new Number("2"), 0);
+        sub.add(new Plus(), 0);
+        sub.add(new Number("2"), 0);
         
         Map<String, Function> varMap = new HashMap<>();
-        varMap.put("x", new Number("3"));
+        varMap.put("x", sub.getFunction());
         
         System.out.println(function.evaluate(varMap));
     }

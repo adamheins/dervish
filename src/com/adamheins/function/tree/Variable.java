@@ -10,13 +10,12 @@ public class Variable extends Function {
 
 
     @Override
-    public void differentiate(String var, Function function) {
+    public Function differentiate(String var) {
         
         // Derivative of a variable is 1.
         if (var.equals(value))
-            function.add(new Number("1"));
-        else
-            function.add(new Number("0"));
+            return new Number("1");
+        return new Number("0");
     }
     
     

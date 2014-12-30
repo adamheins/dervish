@@ -5,23 +5,28 @@ import java.util.Map;
 
 public class Multiply extends Function {
 
-    public Multiply(int bracketDepth) {
-        super("*", Precedence.MULTIPLICATION, Associativity.LEFT, bracketDepth);
+    public Multiply() {
+        super("*", Precedence.MULTIPLICATION, Associativity.LEFT);
     }
 
     
     @Override
-    public void differentiate(String var, Function function) {
+    public Function differentiate(String var) {
         
-        getFirstChild().differentiate(var, function);
-        function.add(new Multiply(bracketDepth));
-        function.add(getSecondChild());
+        Function derivative = new Plus();
+        Function mult1 = new Multiply();
+        Function mult2 = new Multiply();
         
-        function.add(new Plus(bracketDepth));
+        mult1.setFirstChild(getFirstChild().differentiate(var));
+        mult1.setSecondChild(getSecondChild());
         
-        function.add(getFirstChild());
-        function.add(new Multiply(bracketDepth));
-        getSecondChild().differentiate(var, function);
+        mult2.setFirstChild(getFirstChild());
+        mult2.setSecondChild(getSecondChild().differentiate(var));
+        
+        derivative.setFirstChild(mult1);
+        derivative.setSecondChild(mult2);
+        
+        return derivative;
     }
     
     
@@ -37,25 +42,24 @@ public class Multiply extends Function {
             BigDecimal firstValue = new BigDecimal(first.value);
             BigDecimal secondValue = new BigDecimal(second.value);
             BigDecimal result = firstValue.multiply(secondValue);
-            return new Number(result.toString(), bracketDepth);
+            return new Number(result.toString());
         }
         
         // If one of the children is equal to zero, there is no point having it in the expression.
         if (first instanceof Number) {
             BigDecimal firstValue = new BigDecimal(first.value);
             if (firstValue.equals(BigDecimal.ZERO))
-                return new Number("0", bracketDepth);
+                return new Number("0");
         } else if (second instanceof Number) {
             BigDecimal secondValue = new BigDecimal(second.value);
             if (secondValue.equals(BigDecimal.ZERO))
-                return new Number("0", bracketDepth);
+                return new Number("0");
         }
 
         
-        Function me = new Multiply(bracketDepth);
+        Function me = new Multiply();
         me.first = first;
         me.second = second;
-        me.parent = this.parent;
 
         return me;
     }

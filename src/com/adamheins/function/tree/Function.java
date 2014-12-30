@@ -35,7 +35,7 @@ abstract class Function {
      * 
      * @return The derivative function.
      */
-    public abstract void differentiate(String var, Function function);
+    public abstract Function differentiate(String var);
     
     
     /**

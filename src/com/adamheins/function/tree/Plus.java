@@ -11,11 +11,12 @@ public class Plus extends Function {
 
 
     @Override
-    public void differentiate(String var, Function function) {
-
-        getFirstChild().differentiate(var, function);
-        function.add(new Plus());
-        getSecondChild().differentiate(var, function);
+    public Function differentiate(String var) {
+        
+        Function derivative = new Plus();
+        derivative.setFirstChild(getFirstChild().differentiate(var));
+        derivative.setSecondChild(getSecondChild().differentiate(var));
+        return derivative;
     }
     
     

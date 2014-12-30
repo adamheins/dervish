@@ -37,11 +37,24 @@ public class FunctionBuilder {
      * 
      * @return The root function.
      */
-    Function getRoot() {
+    private Function getRoot() {
         
         FunctionNode rootNode = current;
         while (rootNode.getParent() != null)
             rootNode = rootNode.getParent();
         return rootNode.getFunction();
+    }
+    
+    
+    /**
+     * Gets the root function after it has been built. The function is automatically evaluated
+     * first, to put it into its simplest form.
+     * 
+     * It should be fine if additional nodes are added after this function is called.
+     * 
+     * @return The root function.
+     */
+    Function getFunction() {
+        return getRoot().evaluate(null);
     }
 }

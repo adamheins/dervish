@@ -10,10 +10,10 @@ public class Number extends Function {
 
     
     @Override
-    public void differentiate(String var, Function derivative) {
+    public Function differentiate(String var) {
         
         // Derivative of a constant value is 0.
-        derivative.add(new Number("0"));
+        return new Number("0");
     }
     
     
