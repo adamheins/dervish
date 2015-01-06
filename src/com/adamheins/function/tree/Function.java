@@ -1,5 +1,9 @@
 package com.adamheins.function.tree;
 
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /** Parent for all types of math nodes. */
@@ -36,6 +40,37 @@ abstract class Function {
      * @return The derivative function.
      */
     public abstract Function differentiate(String var);
+    
+    
+    /**
+     * Determines the variables of which this Function is a function.
+     * 
+     * @return A list containing the string representation of each variable in this function.
+     */
+    public List<String> getVariables() {
+        
+        List<String> varList = new ArrayList<String>();
+        Deque<Function> funcStack = new LinkedList<Function>();
+        
+        funcStack.push(this);
+        
+        while(!funcStack.isEmpty()) {
+            Function current = funcStack.pop();
+
+            if (current instanceof Variable) {
+                varList.add(current.getValue());
+                continue;
+            } else if (current instanceof Number) {
+                continue;
+            }
+            
+            funcStack.push(current.getFirstChild());
+            if (getSecondChild() != null)
+                funcStack.push(current.getSecondChild());
+        }
+        
+        return varList;
+    }
     
     
     /**
@@ -77,7 +112,10 @@ abstract class Function {
         second = child;
     }
     
-
+    
+    String getValue() {
+        return value;
+    }
     
     
     /*@Override

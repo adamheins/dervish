@@ -20,22 +20,20 @@ public class Main {
         FunctionBuilder fb = new FunctionBuilder();
         
         fb.add(new Number("5"), 0);
-        fb.add(new Plus(), 0);
+        fb.add(new Divide(), 0);
         fb.add(new Number("2"), 0);
-        fb.add(new Multiply(), 0);
-        fb.add(new Variable("x"), 0);
+        //fb.add(new Multiply(), 0);
+        //fb.add(new Variable("x"), 0);
+        //fb.add(new Multiply(), 0);
+        //fb.add(new Variable("y"), 0);
         
         Function function = fb.getFunction();
         
-        FunctionBuilder sub = new FunctionBuilder();
-        sub.add(new Number("2"), 0);
-        sub.add(new Plus(), 0);
-        sub.add(new Number("2"), 0);
-        
         Map<String, Function> varMap = new HashMap<>();
-        varMap.put("x", sub.getFunction());
+        varMap.put("x", new Number("3"));
         
-        System.out.println(function.evaluate(varMap));
+        System.out.println(function.evaluate(null));
+        System.out.println(function.getVariables());
     }
 
 }
