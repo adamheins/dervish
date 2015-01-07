@@ -57,7 +57,7 @@ public class Divide extends Function {
         
         derivative.setFirstChild(minus);
         derivative.setSecondChild(mult3);
-        
+
         return derivative;
     }
 

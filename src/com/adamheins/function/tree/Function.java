@@ -136,6 +136,8 @@ abstract class Function {
         if (first == null && second == null)
             return value;
         
+        //System.out.println(value + " " + getFirstChild());
+        //System.out.println(getSecondChild());
         String str = getFirstChild().toString();
         
         if (first.precedence.compareTo(precedence) <= 0) // whether it is <= 0 probably depends on commutativity
