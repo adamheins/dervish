@@ -32,6 +32,11 @@ abstract class Function {
     public abstract Function evaluate(Map<String, Function> varMap);
     
     
+    public Function evaluate() {
+        return evaluate(null);
+    }
+    
+    
     /**
      * Calculates the  derivative of the subtree that has this Node at its root.
      * 
@@ -145,7 +150,7 @@ abstract class Function {
         
         // Check if this is a unary operator, which only has its first child populated.
         if (second == null)
-            return value + str;
+            return value + "(" + str + ")";
         
         // Add the operator.
         str += value;
@@ -157,6 +162,13 @@ abstract class Function {
             str += getSecondChild().toString();
         
         return str;
+    }
+    
+
+    public boolean equals(Function other) {
+        return getValue().equals(other.getValue()) 
+                && getFirstChild().equals(other.getFirstChild()) 
+                && getSecondChild().equals(other.getSecondChild());
     }
     
     

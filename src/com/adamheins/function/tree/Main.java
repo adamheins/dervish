@@ -4,13 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
- * root issue
- * possible to add values without storing precedence?
- * difference between the way differentiation and evaluation is performed
- * possibly add a boolean negative field to variables OR simply add a unary neg operator
- * problem with using BigDecimal is that it doesn't support trig/log etc
- * 
- * possibly use some kind of FunctionIterator when parsing
+ * Change public facing differentiation function to always call evaluate()
+ * Use Apfloat library for internal calculations.
+ * Re-add polymorphic toString() behaviour.
+ * Add polymorphic calculation behaviour.
+ * Add an "exact" mode which avoids evaluating expressions that results in inexact values.
  */
 
 public class Main {
@@ -19,9 +17,10 @@ public class Main {
         
         FunctionBuilder fb = new FunctionBuilder();
         
+        fb.add(new Log("10"), 0);
         fb.add(new Variable("x"), 0);
-        fb.add(new Exponent(), 0);
-        fb.add(new Number("2"), 0);
+        //fb.add(new Exponent(), 0);
+        //fb.add(new Number("2"), 0);
         //fb.add(new Multiply(), 0);
         //fb.add(new Variable("x"), 0);
         //fb.add(new Multiply(), 0);
@@ -30,9 +29,9 @@ public class Main {
         Function function = fb.getFunction();
         
         Map<String, Function> varMap = new HashMap<>();
-        varMap.put("x", new Number("3"));
+        varMap.put("x", new Number("1000"));
 
-        System.out.println(function.evaluate(varMap));
+        System.out.println(function.differentiate("x").evaluate(varMap));
         //System.out.println(function.getVariables());
     }
 

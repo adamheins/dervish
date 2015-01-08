@@ -1,13 +1,38 @@
 package com.adamheins.function.tree;
 
+import java.util.Map;
+
 public class Cos extends Function {
 
-    public Cos(int bracketDepth) {
-        super("cos", Precedence.TRIG, Associativity.RIGHT, bracketDepth);
+    public Cos() {
+        super("cos", Precedence.TRIG, Associativity.RIGHT);
     }
 
     @Override
-    public double evaluate() {
-        return Math.cos(getFirstChild().evaluate());
+    public Function evaluate(Map<String, Function> varMap) {
+        Function child = getFirstChild().evaluate(varMap);
+        
+        if (child instanceof Number) {
+            return new Number(Double.toString(Math.cos(Double.parseDouble(child.getValue()))));
+        }
+        
+        Function me = new Cos();
+        me.setFirstChild(child);
+        
+        return me;
+    }
+
+    @Override
+    public Function differentiate(String var) {
+        Function mult = new Multiply();
+        Function sin = new Sin();
+        Function neg = new Negative();
+        
+        sin.setFirstChild(getFirstChild().evaluate());
+        neg.setFirstChild(sin);
+        mult.setFirstChild(neg);
+        mult.setSecondChild(getFirstChild().differentiate(var));
+        
+        return mult;
     }
 }

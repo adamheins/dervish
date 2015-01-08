@@ -50,10 +50,14 @@ public class Multiply extends Function {
             BigDecimal firstValue = new BigDecimal(first.value);
             if (firstValue.equals(BigDecimal.ZERO))
                 return new Number("0");
+            if (firstValue.equals(BigDecimal.ONE))
+                return second;
         } else if (second instanceof Number) {
             BigDecimal secondValue = new BigDecimal(second.value);
             if (secondValue.equals(BigDecimal.ZERO))
                 return new Number("0");
+            if (secondValue.equals(BigDecimal.ONE))
+                return first;
         }
 
         

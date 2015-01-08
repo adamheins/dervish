@@ -39,8 +39,37 @@ public class Exponent extends Function {
     
     @Override
     public Function differentiate(String var) {
-        // TODO General form of derivative of power, where both base and exponent are functions
-        // is tediously long. Implement.
+        //f(x)^g(x) * d/dx( g(x) ) * ln( f(x) ) + f(x)^( g(x)-1 ) * g(x) * d/dx( f(x) )
+        
+        
+        
+        
+        Function first = getFirstChild().evaluate();
+        Function second = getSecondChild().evaluate();
+        
+        Function firstDer = first.differentiate(var);
+        Function secondDer = second.differentiate(var);
+        
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(first, 0);
+        fb.add(new Exponent(), 0);
+        fb.add(second, 0);
+        
+        fb.add(new Multiply(), 0);
+        fb.add(secondDer, 0);
+        
+        Function exp1 = new Exponent();
+        exp1.setFirstChild(first);
+        exp1.setSecondChild(second);
+        
+        Function 
+        
+        Function minus = new Minus();
+        minus.setFirstChild(second);
+        minus.setSecondChild(new Number("1"));
+        
+        Function plus = new Plus();
+        
         return null;
     }
 
