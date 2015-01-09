@@ -55,6 +55,6 @@ public class FunctionBuilder {
      * @return The root function.
      */
     Function getFunction() {
-        return getRoot().evaluate(null);
+        return getRoot().evaluate();
     }
 }

@@ -23,10 +23,12 @@ public class Exponent extends Function {
         }
         
         // Value is always 1 if the exponent is 0.
-        // TODO unless the base is also 0, in which case it is undefined.
+        // Ignore exponents with value 1.
         if (second instanceof Number) {
            if ((new BigDecimal(second.getValue())).equals(BigDecimal.ZERO))
                return new Number("1");
+           if ((new BigDecimal(second.getValue())).equals(BigDecimal.ONE))
+               return first;
         }
         
         Function me = new Exponent();
@@ -41,9 +43,6 @@ public class Exponent extends Function {
     public Function differentiate(String var) {
         //f(x)^g(x) * d/dx( g(x) ) * ln( f(x) ) + f(x)^( g(x)-1 ) * g(x) * d/dx( f(x) )
         
-        
-        
-        
         Function first = getFirstChild().evaluate();
         Function second = getSecondChild().evaluate();
         
@@ -54,23 +53,23 @@ public class Exponent extends Function {
         fb.add(first, 0);
         fb.add(new Exponent(), 0);
         fb.add(second, 0);
-        
         fb.add(new Multiply(), 0);
         fb.add(secondDer, 0);
+        fb.add(new Multiply(), 0);
+        fb.add(new Ln(), 0);
+        fb.add(first, 0);
+        fb.add(new Plus(), 0);
+        fb.add(first, 0);
+        fb.add(new Exponent(), 0);
+        fb.add(second, 1);
+        fb.add(new Minus(), 1);
+        fb.add(new Number("1"), 1);
+        fb.add(new Multiply(), 0);
+        fb.add(second, 0);
+        fb.add(new Multiply(), 0);
+        fb.add(firstDer, 0);
         
-        Function exp1 = new Exponent();
-        exp1.setFirstChild(first);
-        exp1.setSecondChild(second);
-        
-        Function 
-        
-        Function minus = new Minus();
-        minus.setFirstChild(second);
-        minus.setSecondChild(new Number("1"));
-        
-        Function plus = new Plus();
-        
-        return null;
+        return fb.getFunction();
     }
 
 }

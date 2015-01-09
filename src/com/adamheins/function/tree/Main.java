@@ -9,6 +9,7 @@ import java.util.Map;
  * Re-add polymorphic toString() behaviour.
  * Add polymorphic calculation behaviour.
  * Add an "exact" mode which avoids evaluating expressions that results in inexact values.
+ * Use a FunctionBuilder to create differentiation trees.
  */
 
 public class Main {
@@ -17,8 +18,9 @@ public class Main {
         
         FunctionBuilder fb = new FunctionBuilder();
         
-        fb.add(new Log("10"), 0);
         fb.add(new Variable("x"), 0);
+        fb.add(new Exponent(), 0);
+        fb.add(new Number("2"), 0);
         //fb.add(new Exponent(), 0);
         //fb.add(new Number("2"), 0);
         //fb.add(new Multiply(), 0);
@@ -31,7 +33,7 @@ public class Main {
         Map<String, Function> varMap = new HashMap<>();
         varMap.put("x", new Number("1000"));
 
-        System.out.println(function.differentiate("x").evaluate(varMap));
+        System.out.println(function.differentiate("x").evaluate());
         //System.out.println(function.getVariables());
     }
 

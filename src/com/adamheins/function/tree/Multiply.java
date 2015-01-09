@@ -59,7 +59,6 @@ public class Multiply extends Function {
             if (secondValue.equals(BigDecimal.ONE))
                 return first;
         }
-
         
         Function me = new Multiply();
         me.first = first;
