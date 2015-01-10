@@ -20,7 +20,7 @@ public class Main {
         
         fb.add(new Variable("x"), 0);
         fb.add(new Exponent(), 0);
-        fb.add(new Number("2"), 0);
+        fb.add(new Variable("x"), 0);
         //fb.add(new Exponent(), 0);
         //fb.add(new Number("2"), 0);
         //fb.add(new Multiply(), 0);
@@ -33,7 +33,7 @@ public class Main {
         Map<String, Function> varMap = new HashMap<>();
         varMap.put("x", new Number("1000"));
 
-        System.out.println(function.differentiate("x").evaluate());
+        System.out.println(function.differentiateInternal("x"));
         //System.out.println(function.getVariables());
     }
 

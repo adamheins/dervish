@@ -25,10 +25,10 @@ public class Ln extends Log {
     
     
     @Override 
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         
         Function divide = new Divide();
-        divide.setFirstChild(getFirstChild().differentiate(var));
+        divide.setFirstChild(getFirstChild().differentiateInternal(var));
         divide.setSecondChild(getFirstChild().evaluate());
         
         return divide;

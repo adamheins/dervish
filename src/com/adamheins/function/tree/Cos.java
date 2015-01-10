@@ -23,7 +23,7 @@ public class Cos extends Function {
     }
 
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         Function mult = new Multiply();
         Function sin = new Sin();
         Function neg = new Negative();
@@ -31,7 +31,7 @@ public class Cos extends Function {
         sin.setFirstChild(getFirstChild().evaluate());
         neg.setFirstChild(sin);
         mult.setFirstChild(neg);
-        mult.setSecondChild(getFirstChild().differentiate(var));
+        mult.setSecondChild(getFirstChild().differentiateInternal(var));
         
         return mult;
     }

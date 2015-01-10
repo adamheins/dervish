@@ -40,14 +40,16 @@ public class Exponent extends Function {
 
     
     @Override
-    public Function differentiate(String var) {
-        //f(x)^g(x) * d/dx( g(x) ) * ln( f(x) ) + f(x)^( g(x)-1 ) * g(x) * d/dx( f(x) )
+    public Function differentiateInternal(String var) {
+        
+        // Formula for d/dx( f(x)^g(x) ):
+        // f(x)^g(x) * d/dx( g(x) ) * ln( f(x) ) + f(x)^( g(x)-1 ) * g(x) * d/dx( f(x) )
         
         Function first = getFirstChild().evaluate();
         Function second = getSecondChild().evaluate();
         
-        Function firstDer = first.differentiate(var);
-        Function secondDer = second.differentiate(var);
+        Function firstDer = first.differentiateInternal(var);
+        Function secondDer = second.differentiateInternal(var);
         
         FunctionBuilder fb = new FunctionBuilder();
         fb.add(first, 0);

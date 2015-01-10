@@ -10,7 +10,7 @@ public class Variable extends Function {
 
 
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         
         // Derivative of a variable is 1.
         if (var.equals(value))

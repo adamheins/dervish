@@ -33,10 +33,10 @@ public class Tan extends Function {
 
     
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         
         Function div = new Divide();
-        div.setFirstChild(getFirstChild().differentiate(var));
+        div.setFirstChild(getFirstChild().differentiateInternal(var));
         
         Function pow = new Exponent();
         Function child = getFirstChild().evaluate();

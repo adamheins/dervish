@@ -41,7 +41,7 @@ public class Log extends Function {
 
 
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         
         // Transform to equivalent form using only natural logarithm.
         Function coeff = new Number(Double.toString(1/Math.log(Double.parseDouble(base))));
@@ -51,7 +51,7 @@ public class Log extends Function {
         mult.setFirstChild(coeff);
         mult.setSecondChild(ln);
         
-        return mult.differentiate(var);
+        return mult.differentiateInternal(var);
     }
 
 }

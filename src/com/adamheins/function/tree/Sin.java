@@ -25,14 +25,14 @@ public class Sin extends Function {
     }
 
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         
         Function mult = new Multiply();
         Function cos = new Cos();
         
         cos.setFirstChild(getFirstChild().evaluate());
         mult.setFirstChild(cos);
-        mult.setSecondChild(getFirstChild().differentiate(var));
+        mult.setSecondChild(getFirstChild().differentiateInternal(var));
         
         return mult;
     }

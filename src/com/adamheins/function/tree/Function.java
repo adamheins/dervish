@@ -38,13 +38,26 @@ abstract class Function {
     
     
     /**
-     * Calculates the  derivative of the subtree that has this Node at its root.
+     * Calculates the derivative of the subtree that has this Node at its root. Used internally
+     * within the class.
      * 
      * @param var - The variable to take the derivative with respect to.
      * 
      * @return The derivative function.
      */
-    public abstract Function differentiate(String var);
+    protected abstract Function differentiateInternal(String var);
+    
+    
+    /**
+     * Calculates a simplified form of the derivative of the function.
+     * 
+     * @param var - The variable to take the derivative with respect to.
+     * 
+     * @return The simplified derivative function.
+     */
+    public Function differentiate(String var) {
+        return differentiateInternal(var).evaluate();
+    }
     
     
     /**
@@ -123,26 +136,11 @@ abstract class Function {
     }
     
     
-    /*@Override
-    public String toString() {
-        
-        if (first == null && second == null)
-            return value;
-        
-        // If parent doesn't exist, or has a lower precedence, need not bother with brackets.
-        if (parent == null || parent.precedence.compareTo(precedence) < 0)
-            return getFirstChild().toString() + value + getSecondChild().toString();
-        return "(" + getFirstChild().toString() + value + getSecondChild().toString() + ")";
-    }*/
-    
-    
     @Override
     public String toString() {
         if (first == null && second == null)
             return value;
         
-        //System.out.println(value + " " + getFirstChild());
-        //System.out.println(getSecondChild());
         String str = getFirstChild().toString();
         
         if (first.precedence.compareTo(precedence) <= 0) // whether it is <= 0 probably depends on commutativity

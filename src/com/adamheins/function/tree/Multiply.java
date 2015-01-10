@@ -11,17 +11,17 @@ public class Multiply extends Function {
 
     
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         
         Function derivative = new Plus();
         Function mult1 = new Multiply();
         Function mult2 = new Multiply();
         
-        mult1.setFirstChild(getFirstChild().differentiate(var));
+        mult1.setFirstChild(getFirstChild().differentiateInternal(var));
         mult1.setSecondChild(getSecondChild());
         
         mult2.setFirstChild(getFirstChild());
-        mult2.setSecondChild(getSecondChild().differentiate(var));
+        mult2.setSecondChild(getSecondChild().differentiateInternal(var));
         
         derivative.setFirstChild(mult1);
         derivative.setSecondChild(mult2);

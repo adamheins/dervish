@@ -10,7 +10,7 @@ public class Number extends Function {
 
     
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         
         // Derivative of a constant value is 0.
         return new Number("0");

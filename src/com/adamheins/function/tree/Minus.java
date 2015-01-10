@@ -42,10 +42,10 @@ public class Minus extends Function {
 
 
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         Function derivative = new Minus();
-        derivative.setFirstChild(getFirstChild().differentiate(var));
-        derivative.setSecondChild(getSecondChild().differentiate(var));
+        derivative.setFirstChild(getFirstChild().differentiateInternal(var));
+        derivative.setSecondChild(getSecondChild().differentiateInternal(var));
         return derivative;
     }
 }

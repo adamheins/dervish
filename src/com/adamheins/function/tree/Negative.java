@@ -26,9 +26,9 @@ public class Negative extends Function {
 
 
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
 
-        Function childDer = getFirstChild().differentiate(var);
+        Function childDer = getFirstChild().differentiateInternal(var);
         Function derivative = new Negative();
         derivative.setFirstChild(childDer);
         return derivative;

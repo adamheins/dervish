@@ -34,7 +34,7 @@ public class Divide extends Function {
 
     
     @Override
-    public Function differentiate(String var) {
+    public Function differentiateInternal(String var) {
         Function derivative = new Divide();
         
         Function minus = new Minus();
@@ -43,11 +43,11 @@ public class Divide extends Function {
         Function mult2 = new Multiply();
         Function mult3 = new Multiply();
         
-        mult1.setFirstChild(getFirstChild().differentiate(var));
+        mult1.setFirstChild(getFirstChild().differentiateInternal(var));
         mult1.setSecondChild(getSecondChild());
         
         mult2.setFirstChild(getFirstChild());
-        mult2.setSecondChild(getSecondChild().differentiate(var));
+        mult2.setSecondChild(getSecondChild().differentiateInternal(var));
         
         minus.setFirstChild(mult1);
         minus.setSecondChild(mult2);
