@@ -1,7 +1,9 @@
 package com.adamheins.function.tree;
 
-import java.math.BigDecimal;
 import java.util.Map;
+
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
 
 public class Exponent extends Function {
 
@@ -17,17 +19,24 @@ public class Exponent extends Function {
         Function second = getSecondChild().evaluate(varMap);
         
         if (first instanceof Number && second instanceof Number) {
-            double firstValue = Double.parseDouble(first.value);
-            double secondValue = Double.parseDouble(second.value);
-            return new Number(Double.toString(Math.pow(firstValue, secondValue)));
+            Apfloat firstValue = new Apfloat(first.getValue());
+            Apfloat secondValue = new Apfloat(second.getValue());
+            return new Number(ApfloatMath.pow(firstValue, secondValue).toString(PRETTY));
+        }
+        
+        if (first instanceof Number) {
+            Apfloat firstValue = new Apfloat(first.getValue());
+            if (firstValue.equals(Apfloat.ZERO))
+                return new Number("0");
+            // TODO add case for base = 1
         }
         
         // Value is always 1 if the exponent is 0.
         // Ignore exponents with value 1.
         if (second instanceof Number) {
-           if ((new BigDecimal(second.getValue())).equals(BigDecimal.ZERO))
+           if ((new Apfloat(second.getValue())).equals(Apfloat.ZERO))
                return new Number("1");
-           if ((new BigDecimal(second.getValue())).equals(BigDecimal.ONE))
+           if ((new Apfloat(second.getValue())).equals(Apfloat.ONE))
                return first;
         }
         

@@ -1,7 +1,8 @@
 package com.adamheins.function.tree;
 
-import java.math.BigDecimal;
 import java.util.Map;
+
+import org.apfloat.Apfloat;
 
 public class Plus extends Function {
 
@@ -29,20 +30,20 @@ public class Plus extends Function {
         
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
-            BigDecimal firstValue = new BigDecimal(first.value);
-            BigDecimal secondValue = new BigDecimal(second.value);
-            BigDecimal result = firstValue.add(secondValue);
-            return new Number(result.toString());
+            
+            Apfloat firstVal = new Apfloat(first.getValue());
+            Apfloat secondVal = new Apfloat(second.getValue());
+            return new Number(firstVal.add(secondVal).toString(PRETTY));
         }
         
         // If one of the children is equal to zero, there is no point having it in the expression.
         if (first instanceof Number) {
-            BigDecimal firstValue = new BigDecimal(first.value);
-            if (firstValue.equals(BigDecimal.ZERO))
+            Apfloat firstVal = new Apfloat(first.getValue());
+            if (firstVal.equals(Apfloat.ZERO))
                 return second;
         } else if (second instanceof Number) {
-            BigDecimal secondValue = new BigDecimal(second.value);
-            if (secondValue.equals(BigDecimal.ZERO))
+            Apfloat secondVal = new Apfloat(second.getValue());
+            if (secondVal.equals(Apfloat.ZERO))
                 return first;
         }
         

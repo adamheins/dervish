@@ -1,7 +1,8 @@
 package com.adamheins.function.tree;
 
-import java.math.BigDecimal;
 import java.util.Map;
+
+import org.apfloat.Apfloat;
 
 public class Minus extends Function {
 
@@ -19,21 +20,26 @@ public class Minus extends Function {
         
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
-            BigDecimal firstValue = new BigDecimal(first.value);
-            BigDecimal secondValue = new BigDecimal(second.value);
-            BigDecimal result = firstValue.subtract(secondValue);
-            return new Number(result.toString());
+            Apfloat firstValue = new Apfloat(first.getValue());
+            Apfloat secondValue = new Apfloat(second.getValue());
+            Apfloat result = firstValue.subtract(secondValue);
+            return new Number(result.toString(PRETTY));
         }
         
-        // TODO need a unary negative sign to handle case where first number is zero.
-        
-        if (second instanceof Number) {
-            BigDecimal secondValue = new BigDecimal(second.value);
-            if (secondValue.equals(BigDecimal.ZERO))
+        if (first instanceof Number) {
+            Apfloat firstValue = new Apfloat(first.getValue());
+            if (firstValue.equals(Apfloat.ZERO)) {
+                Function neg = new Negative();
+                neg.setFirstChild(second);
+                return neg;
+            }
+        } else if (second instanceof Number) {
+            Apfloat secondValue = new Apfloat(second.getValue());
+            if (secondValue.equals(Apfloat.ZERO))
                 return first;
         }
         
-        Function me = new Plus();
+        Function me = new Minus();
         me.setFirstChild(first);
         me.setSecondChild(second);
         

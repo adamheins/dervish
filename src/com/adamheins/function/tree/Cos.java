@@ -2,6 +2,9 @@ package com.adamheins.function.tree;
 
 import java.util.Map;
 
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
+
 public class Cos extends Function {
 
     public Cos() {
@@ -13,7 +16,8 @@ public class Cos extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            return new Number(Double.toString(Math.cos(Double.parseDouble(child.getValue()))));
+            Apfloat value = new Apfloat(child.getValue());
+            return new Number(ApfloatMath.cos(value).toString(PRETTY));
         }
         
         Function me = new Cos();

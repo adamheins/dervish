@@ -9,6 +9,11 @@ import java.util.Map;
 /** Parent for all types of math nodes. */
 abstract class Function {
     
+    // Precision of the results of operations that generate less precise results than the operands.
+    // One example is division, which can take infinite-precision integers and produce finite-
+    // precision fractional numbers.
+    protected final int PRECISION = 20;
+    
     protected final String value;
     protected final Precedence precedence;
     protected final Associativity associativity;

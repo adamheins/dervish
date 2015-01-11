@@ -5,210 +5,115 @@ import org.junit.Test;
 
 public class Tests {
     
-    // Small arbitrary error bound in case floating points are acting up.
-    private static final double ERROR = 1e-10; 
     
-    
-    /*
-     * 2 + 3 + 4 = 9
-     */
     @Test
-    public void testAddition() {
-        Function expression = new Function();      
-        expression.add(new Number("2", 0));
-        expression.add(new Plus(0));
-        expression.add(new Number("3", 0));
-        expression.add(new Plus(0));
-        expression.add(new Number("4", 0));
-        Assert.assertEquals(9, expression.evaluate(), ERROR);
+    public void testBuildOneNumber() {
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Number("1"), 0);
+        
+        Function result = fb.getFunction();
+        
+        Assert.assertEquals("1", result.toString());
     }
     
     
-    /*
-     * 10 - 7 = 3
-     */
     @Test
-    public void testSubtraction() {
-        Function expression = new Function();      
-        expression.add(new Number("10", 0));
-        expression.add(new Minus(0));
-        expression.add(new Number("7", 0));
-        Assert.assertEquals(3, expression.evaluate(), ERROR);
+    public void testDifferentiateOneNumber() {
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Number("1"), 0);
+        
+        Function result = fb.getFunction().differentiate(null);
+        
+        Assert.assertEquals("0", result.toString());
     }
     
     
-    /*
-     * Tests that operators with left associativity evaluate left to right when multiple
-     * operators of the same precedence occur in a row.
-     * 
-     * 7 - 3 - 2 = 2
-     */
     @Test
-    public void testLeftAssociativity() {
-        Function expression = new Function();      
-        expression.add(new Number("7", 0));
-        expression.add(new Minus(0));
-        expression.add(new Number("3", 0));
-        expression.add(new Minus(0));
-        expression.add(new Number("2", 1));
-        Assert.assertEquals(2, expression.evaluate(), ERROR);
+    public void testDifferentiateOneVariable() {
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Variable("x"), 0);
+        
+        Function result = fb.getFunction().differentiate("x");
+        
+        Assert.assertEquals("1", result.toString());
+    }
+
+    
+    @Test
+    public void testAdditionIntegers() {
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Number("1"), 0);
+        fb.add(new Plus(), 0);
+        fb.add(new Number("2"), 0);
+        
+        Function result = fb.getFunction();
+        
+        Assert.assertEquals("3", result.toString());
     }
     
     
-    /*
-     * 10 * 10 * 3 = 300
-     */
     @Test
-    public void testMultiplication() {
-        Function expression = new Function();      
-        expression.add(new Number("10", 0));
-        expression.add(new Multiply(0));
-        expression.add(new Number("10", 0));
-        expression.add(new Multiply(0));
-        expression.add(new Number("3", 0));
-        Assert.assertEquals(300, expression.evaluate(), ERROR);
+    public void testAdditionFloats() {
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Number("1.5"), 0);
+        fb.add(new Plus(), 0);
+        fb.add(new Number("2.5"), 0);
+        
+        Function result = fb.getFunction();
+        
+        Assert.assertEquals("4", result.toString());
     }
     
     
-    /*
-     * 16 / 4
-     */
     @Test
-    public void testDivision() {
-        Function expression = new Function();      
-        expression.add(new Number("16", 0));
-        expression.add(new Divide(0));
-        expression.add(new Number("4", 0));
-        Assert.assertEquals(4, expression.evaluate(), ERROR);
+    public void testAdditionOneVariable() {
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Number("3"), 0);
+        fb.add(new Plus(), 0);
+        fb.add(new Variable("x"), 0);
+        
+        Function result = fb.getFunction();
+        
+        Assert.assertEquals("3+x", result.toString());
     }
     
     
-    /*
-     * 9 ^ 2 = 81
-     */
     @Test
-    public void testPow() {
-        Function expression = new Function();      
-        expression.add(new Number("9", 0));
-        expression.add(new Exponent(0));
-        expression.add(new Number("2", 0));
-        Assert.assertEquals(81, expression.evaluate(), ERROR);
+    public void testAdditionTwoVariables() {
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Variable("x"), 0);
+        fb.add(new Plus(), 0);
+        fb.add(new Variable("y"), 0);
+        
+        Function result = fb.getFunction();
+        
+        Assert.assertEquals("x+y", result.toString());
     }
     
     
-    /*
-     * Tests that operators with right associativity evaluate right to left when multiple
-     * operators of the same precedence occur in a row.
-     * 
-     * 2 ^ 3 ^ 2 = 512
-     */
     @Test
-    public void testRightAssociativity() {
-        Function expression = new Function();      
-        expression.add(new Number("2", 0));
-        expression.add(new Exponent(0));
-        expression.add(new Number("3", 0));
-        expression.add(new Exponent(0));
-        expression.add(new Number("2", 0));
-        Assert.assertEquals(512, expression.evaluate(), ERROR);
+    public void testAdditionZeroTerm() {
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Variable("x"), 0);
+        fb.add(new Plus(), 0);
+        fb.add(new Number("0"), 0);
+        
+        Function result = fb.getFunction();
+        
+        Assert.assertEquals("x", result.toString());
     }
     
     
-    /*
-     * 2 + 3 * 4 - 5 = 9
-     */
     @Test
-    public void testMultipleBinaryOperators() {
-        Function expression = new Function();      
-        expression.add(new Number("2", 0));
-        expression.add(new Plus(0));
-        expression.add(new Number("3", 0));
-        expression.add(new Multiply(0));
-        expression.add(new Number("4", 0));
-        expression.add(new Minus(0));
-        expression.add(new Number("5", 0));
-        Assert.assertEquals(9, expression.evaluate(), ERROR);
+    public void testAdditionTwoZeros() {
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Number("0"), 0);
+        fb.add(new Plus(), 0);
+        fb.add(new Number("0"), 0);
+        
+        Function result = fb.getFunction();
+        
+        Assert.assertEquals("0", result.toString());
     }
     
-    
-    /*
-     * sin1.57079632679489 = 1 (approx)
-     */
-    @Test
-    public void testSin() {
-        Function expression = new Function();      
-        expression.add(new Sin(0));
-        expression.add(new Number("1.57079632679489", 0));
-        Assert.assertEquals(1, expression.evaluate(), ERROR);
-    }
-    
-    
-    /*
-     * cos0 = 1
-     */
-    @Test
-    public void testCos() {
-        Function expression = new Function();      
-        expression.add(new Cos(0));
-        expression.add(new Number("0", 0));
-        Assert.assertEquals(1, expression.evaluate(), ERROR);
-    }
-    
-    
-    /*
-     * tan0.78539816339744 = 1 (approx)
-     */
-    @Test
-    public void testTan() {
-        Function expression = new Function();      
-        expression.add(new Tan(0));
-        expression.add(new Number("0.78539816339744", 0));
-        Assert.assertEquals(1, expression.evaluate(), ERROR);
-    }
-    
-    
-    /*
-     * sinsin1 = 0.745624141665557 (approx)
-     */
-    @Test
-    public void testMultipleUnaryOperators() {
-        Function expression = new Function();      
-        expression.add(new Sin(0));
-        expression.add(new Sin(0));
-        expression.add(new Number("1", 0));
-        Assert.assertEquals(0.745624141665557, expression.evaluate(), ERROR);
-    }
-    
-    
-    /*
-     * 2 + sin1.57079632679489 * 3 = 5 (approx)
-     */
-    @Test
-    public void testUnaryAndBinaryOperators() {
-        Function expression = new Function();      
-        expression.add(new Number("2", 0));
-        expression.add(new Plus(0));
-        expression.add(new Sin(0));
-        expression.add(new Number("1.57079632679489", 0));
-        expression.add(new Multiply(0));
-        expression.add(new Number("3", 0));
-        Assert.assertEquals(5, expression.evaluate(), ERROR);
-    }
-    
-    
-    /*
-     * (2 + 3) * (4 + 5) = 45
-     */
-    @Test
-    public void testBrackets() {
-        Function expression = new Function();       
-        expression.add(new Number("2", 1));
-        expression.add(new Plus(1));
-        expression.add(new Number("3", 1));
-        expression.add(new Multiply(0));
-        expression.add(new Number("4", 1));
-        expression.add(new Plus(1));
-        expression.add(new Number("5", 1));
-        Assert.assertEquals(45, expression.evaluate(), ERROR);
-    }
 }

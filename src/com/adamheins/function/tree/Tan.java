@@ -2,6 +2,9 @@ package com.adamheins.function.tree;
 
 import java.util.Map;
 
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
+
 public class Tan extends Function {
 
     public Tan() {
@@ -14,7 +17,8 @@ public class Tan extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if(child instanceof Number) {
-            return new Number(Double.toString(Math.tan(Double.parseDouble(child.getValue()))));
+            Apfloat value = new Apfloat(child.getValue());
+            return new Number(ApfloatMath.tan(value).toString(PRETTY));
         }
         
         Function me = new Tan();

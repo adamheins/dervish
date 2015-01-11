@@ -2,6 +2,9 @@ package com.adamheins.function.tree;
 
 import java.util.Map;
 
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
+
 public class Log extends Function {
 
     
@@ -27,10 +30,9 @@ public class Log extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            double baseVal = Double.parseDouble(base);
-            double val = Double.parseDouble(child.getValue());
-            double result = Math.log(val) / Math.log(baseVal);
-            return new Number(Double.toString(result));
+            Apfloat value = new Apfloat(child.getValue());
+            Apfloat baseValue = new Apfloat(base);
+            return new Number(ApfloatMath.log(value, baseValue).toString(PRETTY));
         }
         
         Function me = new Log(base);

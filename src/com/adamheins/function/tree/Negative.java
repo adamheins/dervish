@@ -2,6 +2,8 @@ package com.adamheins.function.tree;
 
 import java.util.Map;
 
+import org.apfloat.Apfloat;
+
 public class Negative extends Function {
 
     public Negative() {
@@ -15,7 +17,8 @@ public class Negative extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            return new Number(Double.toString(-Double.parseDouble(child.getValue())));
+            Apfloat value = new Apfloat(child.getValue());
+            return new Number(value.negate().toString(PRETTY));
         }
         
         Function me = new Negative();

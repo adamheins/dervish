@@ -2,6 +2,9 @@ package com.adamheins.function.tree;
 
 import java.util.Map;
 
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
+
 public class Sin extends Function {
 
     public Sin() {
@@ -15,7 +18,8 @@ public class Sin extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            return new Number(Double.toString(Math.sin(Double.parseDouble(child.getValue()))));
+            Apfloat value = new Apfloat(child.getValue());
+            return new Number(ApfloatMath.sin(value).toString(PRETTY));
         }
         
         Function me = new Sin();

@@ -2,6 +2,9 @@ package com.adamheins.function.tree;
 
 import java.util.Map;
 
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
+
 public class Ln extends Log {
 
     public Ln() {
@@ -14,8 +17,11 @@ public class Ln extends Log {
         
         Function child = getFirstChild().evaluate(varMap);
         
-        if (child instanceof Number)
-            return new Number(Double.toString(Math.log(Double.parseDouble(child.getValue()))));
+        if (child instanceof Number) {
+            Apfloat value = new Apfloat(child.getValue());
+            return new Number(ApfloatMath.log(value).toString(PRETTY));
+        }
+           // return new Number(Double.toString(Math.log(Double.parseDouble(child.getValue()))));
         
         Function me = new Ln();
         me.setFirstChild(child);
