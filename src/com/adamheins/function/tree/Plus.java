@@ -7,7 +7,7 @@ import org.apfloat.Apfloat;
 public class Plus extends Function {
 
     public Plus() {
-        super("+", Precedence.ADDITION, Associativity.LEFT);
+        super("+", Precedence.ADDITION, Associativity.LEFT, true);
     }
 
 

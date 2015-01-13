@@ -8,7 +8,7 @@ import org.apfloat.ApfloatMath;
 public class Exponent extends Function {
 
     public Exponent() {
-        super("^", Precedence.EXPONENTIATION, Associativity.RIGHT);
+        super("^", Precedence.EXPONENTIATION, Associativity.RIGHT, false);
     }
 
 

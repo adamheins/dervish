@@ -8,7 +8,7 @@ import org.apfloat.ApfloatMath;
 public class Cos extends Function {
 
     public Cos() {
-        super("cos", Precedence.TRIG, Associativity.RIGHT);
+        super("cos", Precedence.TRIG, Associativity.RIGHT, false);
     }
 
     @Override

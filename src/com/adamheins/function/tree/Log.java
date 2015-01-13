@@ -11,15 +11,15 @@ public class Log extends Function {
     String base;
     
     public Log(String base) {
-        super("log<" + base + ">", Precedence.EXPONENTIATION, Associativity.RIGHT);
+        super("log<" + base + ">", Precedence.EXPONENTIATION, Associativity.RIGHT, false);
         this.base = base;
     }
     
     
     // Super-internal use only.
     // As opposed to regular internal use.
-    Log(String base, String value) {
-        super(value, Precedence.EXPONENTIATION, Associativity.RIGHT);
+    protected Log(String base, String value) {
+        super(value, Precedence.EXPONENTIATION, Associativity.RIGHT, false);
         this.base = base;
     }
 

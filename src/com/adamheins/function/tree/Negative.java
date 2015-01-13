@@ -7,7 +7,7 @@ import org.apfloat.Apfloat;
 public class Negative extends Function {
 
     public Negative() {
-        super("-", Precedence.MULTIPLICATION, Associativity.RIGHT);
+        super("-", Precedence.MULTIPLICATION, Associativity.RIGHT, false);
     }
 
 

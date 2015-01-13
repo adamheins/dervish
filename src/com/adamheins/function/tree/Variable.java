@@ -5,7 +5,7 @@ import java.util.Map;
 public class Variable extends Function {
 
     public Variable(String value) {
-        super(value, Precedence.NUMBER, Associativity.LEFT);
+        super(value, Precedence.NUMBER, Associativity.LEFT, true);
     }
 
 

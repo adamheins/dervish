@@ -7,7 +7,7 @@ import org.apfloat.Apfloat;
 public class Multiply extends Function {
 
     public Multiply() {
-        super("*", Precedence.MULTIPLICATION, Associativity.LEFT);
+        super("*", Precedence.MULTIPLICATION, Associativity.LEFT, true);
     }
     
     

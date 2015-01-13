@@ -13,30 +13,50 @@ abstract class Function {
     // One example is division, which can take infinite-precision integers and produce finite-
     // precision fractional numbers.
     protected final int PRECISION = 20;
+    protected final boolean PRETTY = false;
     
     protected final String value;
     protected final Precedence precedence;
     protected final Associativity associativity;
+    
+    protected final boolean commutative;
     
     // Children.
     protected Function first;
     protected Function second;
 
     
-    Function(String value, Precedence precedence, Associativity associativity) {
+    Function(String value, Precedence precedence, Associativity associativity, boolean commutative) {
         this.value = value;
         this.precedence = precedence;
         this.associativity = associativity;
+        this.commutative = commutative;
 
         first = null;
         second = null;
+        
+        commutative = false; //TODO set this properly
     }
     
     
-    
+    /**
+     * Evaluates the function, substituting values for all variables in the passed map. The function
+     * will be reduced to a simpler function. If no variables are present or all variables have
+     * a number substituted, it will be reduced to a number.
+     * 
+     * @param varMap A map of variable names and the Functions that should be substituted into
+     *               them.
+     * 
+     * @return The evaluated Function.
+     */
     public abstract Function evaluate(Map<String, Function> varMap);
     
     
+    /**
+     * Evaluates the Function without performing any variable substitution.
+     * 
+     * @return The evaluated Function.
+     */
     public Function evaluate() {
         return evaluate(null);
     }
@@ -169,9 +189,27 @@ abstract class Function {
     
 
     public boolean equals(Function other) {
-        return getValue().equals(other.getValue()) 
-                && getFirstChild().equals(other.getFirstChild()) 
-                && getSecondChild().equals(other.getSecondChild());
+        
+        // The two functions are exactly equal.
+        boolean equal = getValue().equals(other.getValue())
+                && ((getFirstChild() != null && other.getFirstChild() != null && getFirstChild().equals(other.getFirstChild()))
+                || (getFirstChild() == null && other.getFirstChild() == null))
+                && ((getSecondChild() != null && other.getSecondChild() != null && getSecondChild().equals(other.getSecondChild()))
+                || (getSecondChild() == null && other.getSecondChild() == null));
+        
+        if (commutative) {
+            
+            // The two functions are not in the exact same form, but are still mathematically equal.
+            boolean commutativeEqual = getValue().equals(other.getValue())
+                    && ((getFirstChild() != null && other.getSecondChild() != null && getFirstChild().equals(other.getSecondChild()))
+                    || (getFirstChild() == null && other.getSecondChild() == null))
+                    && ((getSecondChild() != null && other.getFirstChild() != null && getSecondChild().equals(other.getFirstChild()))
+                    || (getSecondChild() == null && other.getFirstChild() == null));
+            
+            return equal || commutativeEqual;
+        }
+            
+        return equal;
     }
     
     

@@ -7,7 +7,7 @@ import org.apfloat.Apfloat;
 public class Minus extends Function {
 
     public Minus() {
-        super("-", Precedence.ADDITION, Associativity.LEFT);
+        super("-", Precedence.ADDITION, Associativity.LEFT, false);
     }
 
 

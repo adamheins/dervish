@@ -11,9 +11,10 @@ public class Tests {
         FunctionBuilder fb = new FunctionBuilder();
         fb.add(new Number("1"), 0);
         
-        Function result = fb.getFunction();
+        Function expected = fb.getFunction();
+        Function actual = new Number("1");
         
-        Assert.assertEquals("1", result.toString());
+        Assert.assertTrue(expected.equals(actual));
     }
     
     
@@ -22,20 +23,41 @@ public class Tests {
         FunctionBuilder fb = new FunctionBuilder();
         fb.add(new Number("1"), 0);
         
-        Function result = fb.getFunction().differentiate(null);
+        Function expected = fb.getFunction().differentiate(null);
+        Function actual = new Number("0");
         
-        Assert.assertEquals("0", result.toString());
+        Assert.assertTrue(expected.equals(actual));
     }
     
     
     @Test
     public void testDifferentiateOneVariable() {
+        Function function = new Variable("x");
+        
+        Function expectedDerivative = function.differentiate("x");
+        Function actualDerivative = new Number("1");
+        
+        Assert.assertTrue(expectedDerivative.equals(actualDerivative));
+    }
+    
+    
+    @Test
+    public void testDifferentiateSimplePolynomial() {
         FunctionBuilder fb = new FunctionBuilder();
         fb.add(new Variable("x"), 0);
+        fb.add(new Exponent(), 0);
+        fb.add(new Number("2"), 0);
         
-        Function result = fb.getFunction().differentiate("x");
+        Function actual = fb.getFunction().differentiate("x");
         
-        Assert.assertEquals("1", result.toString());
+        fb = new FunctionBuilder();
+        fb.add(new Number("2"), 0);
+        fb.add(new Multiply(), 0);
+        fb.add(new Variable("x"), 0);
+        
+        Function expected = fb.getFunction();
+        
+        Assert.assertTrue(expected.equals(actual));
     }
 
     

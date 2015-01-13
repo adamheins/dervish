@@ -8,7 +8,7 @@ import org.apfloat.ApfloatMath;
 public class Sin extends Function {
 
     public Sin() {
-        super("sin", Precedence.TRIG, Associativity.RIGHT);
+        super("sin", Precedence.TRIG, Associativity.RIGHT, false);
     }
 
 

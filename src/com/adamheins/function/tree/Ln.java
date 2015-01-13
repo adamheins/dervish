@@ -21,8 +21,7 @@ public class Ln extends Log {
             Apfloat value = new Apfloat(child.getValue());
             return new Number(ApfloatMath.log(value).toString(PRETTY));
         }
-           // return new Number(Double.toString(Math.log(Double.parseDouble(child.getValue()))));
-        
+
         Function me = new Ln();
         me.setFirstChild(child);
         

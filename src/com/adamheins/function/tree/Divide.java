@@ -7,7 +7,7 @@ import org.apfloat.Apfloat;
 public class Divide extends Function {
 
     public Divide() {
-        super("/", Precedence.MULTIPLICATION, Associativity.LEFT);
+        super("/", Precedence.MULTIPLICATION, Associativity.LEFT, false);
     }
     
 

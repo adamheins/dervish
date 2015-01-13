@@ -8,7 +8,7 @@ import org.apfloat.ApfloatMath;
 public class Tan extends Function {
 
     public Tan() {
-        super("tan", Precedence.TRIG, Associativity.RIGHT);
+        super("tan", Precedence.TRIG, Associativity.RIGHT, false);
     }
 
     @Override
