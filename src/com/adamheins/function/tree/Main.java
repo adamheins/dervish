@@ -1,7 +1,8 @@
 package com.adamheins.function.tree;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /*
  * Re-add polymorphic toString() behaviour.
@@ -19,27 +20,33 @@ public class Main {
 
     public static void main(String[] args) {
         
+        /*
         FunctionBuilder fb = new FunctionBuilder();
         
-        fb.add(new Number("5"), 0);
+        fb.add(new Number("2"), 0);
+        fb.add(new Plus(), 0);
+        fb.add(new Number("3"), 0);
         fb.add(new Multiply(), 0);
-        fb.add(new Variable("x"), 0);
+        fb.add(new Number("4"), 0);
         
         Function function = fb.getFunction();
-        
-        fb = new FunctionBuilder();
-        fb.add(new Variable("x"), 0);
-        fb.add(new Multiply(), 0);
-        fb.add(new Number("5"), 0);
-        
-        Function function2 = fb.getFunction();
         
         Map<String, Function> varMap = new HashMap<>();
         varMap.put("x", new Number("1000"));
 
-        System.out.println(function);
-        System.out.println(function2);
-        System.out.println(function.equals(function2));
+        System.out.println(function.evaluate());*/
+        
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        
+        String input;
+        FunctionParser parser = new FunctionParser();
+        
+        try {
+            while ((input = reader.readLine()) != null)
+                System.out.println(parser.parse(input));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

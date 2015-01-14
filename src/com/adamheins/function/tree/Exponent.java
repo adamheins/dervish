@@ -19,8 +19,8 @@ public class Exponent extends Function {
         Function second = getSecondChild().evaluate(varMap);
         
         if (first instanceof Number && second instanceof Number) {
-            Apfloat firstValue = new Apfloat(first.getValue());
-            Apfloat secondValue = new Apfloat(second.getValue());
+            Apfloat firstValue = new Apfloat(first.getValue(), PRECISION);
+            Apfloat secondValue = new Apfloat(second.getValue(), PRECISION);
             return new Number(ApfloatMath.pow(firstValue, secondValue).toString(PRETTY));
         }
         

@@ -31,8 +31,8 @@ public class Plus extends Function {
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
             
-            Apfloat firstVal = new Apfloat(first.getValue());
-            Apfloat secondVal = new Apfloat(second.getValue());
+            Apfloat firstVal = new Apfloat(first.getValue(), PRECISION);
+            Apfloat secondVal = new Apfloat(second.getValue(), PRECISION);
             return new Number(firstVal.add(secondVal).toString(PRETTY));
         }
         

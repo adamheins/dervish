@@ -13,7 +13,7 @@ abstract class Function {
     // One example is division, which can take infinite-precision integers and produce finite-
     // precision fractional numbers.
     protected final int PRECISION = 20;
-    protected final boolean PRETTY = false;
+    protected final boolean PRETTY = true;
     
     protected final String value;
     protected final Precedence precedence;

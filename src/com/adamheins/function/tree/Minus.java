@@ -20,8 +20,8 @@ public class Minus extends Function {
         
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
-            Apfloat firstValue = new Apfloat(first.getValue());
-            Apfloat secondValue = new Apfloat(second.getValue());
+            Apfloat firstValue = new Apfloat(first.getValue(), PRECISION);
+            Apfloat secondValue = new Apfloat(second.getValue(), PRECISION);
             Apfloat result = firstValue.subtract(secondValue);
             return new Number(result.toString(PRETTY));
         }

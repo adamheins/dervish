@@ -18,7 +18,7 @@ public class Sin extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            Apfloat value = new Apfloat(child.getValue());
+            Apfloat value = new Apfloat(child.getValue(), PRECISION);
             return new Number(ApfloatMath.sin(value).toString(PRETTY));
         }
         
