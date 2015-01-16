@@ -27,6 +27,9 @@ public class FunctionParser {
             } else if (functionString.charAt(index) == '/') {
                 fb.add(new Divide(), bracketCounter);
                 index++;
+            } else if (functionString.charAt(index) == '^') {
+                fb.add(new Exponent(), bracketCounter);
+                index++;
             } else if (substringAt(functionString, "sin", index)) {
                 fb.add(new Sin(), bracketCounter);
                 index += 3;

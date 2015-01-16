@@ -13,40 +13,21 @@ import java.io.InputStreamReader;
  * Polymorphic way to check for number and do calculations
  * Simplify way to design each evaluation method.
  * 
- * Need a more robust equals method.
  */
 
-public class Main {
-
-    public static void main(String[] args) {
+public class FunctionMain {
         
-        /*
-        FunctionBuilder fb = new FunctionBuilder();
-        
-        fb.add(new Number("2"), 0);
-        fb.add(new Plus(), 0);
-        fb.add(new Number("3"), 0);
-        fb.add(new Multiply(), 0);
-        fb.add(new Number("4"), 0);
-        
-        Function function = fb.getFunction();
-        
-        Map<String, Function> varMap = new HashMap<>();
-        varMap.put("x", new Number("1000"));
-
-        System.out.println(function.evaluate());*/
+    public static void main(String args[]) {
         
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        
         String input;
-        FunctionParser parser = new FunctionParser();
+        CommandParser parser = new CommandParser();
         
         try {
             while ((input = reader.readLine()) != null)
-                System.out.println(parser.parse(input));
+                System.out.print(parser.parse(input));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
