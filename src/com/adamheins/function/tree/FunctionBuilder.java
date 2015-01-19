@@ -1,10 +1,16 @@
 package com.adamheins.function.tree;
 
-public class FunctionBuilder {
 
-    
+/**
+ * The FunctionBuilder class allows trees of Functions to be easily built from a serial stream
+ * of constituting functions.
+ * 
+ * @author Adam
+ */
+public class FunctionBuilder {
+ 
     // Current node in the tree, which is the one that was most recently added.
-    private FunctionNode current;
+    FunctionNode current;
     
     
     /**

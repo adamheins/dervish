@@ -4,7 +4,7 @@ import com.adamheins.function.tree.Function.Associativity;
 
 public class FunctionNode {
 
-    private Function function;
+    Function function;
     private FunctionNode parent;
     private int bracketDepth;
 

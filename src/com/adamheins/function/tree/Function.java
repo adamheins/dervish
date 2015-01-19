@@ -13,12 +13,13 @@ abstract class Function {
     // One example is division, which can take infinite-precision integers and produce finite-
     // precision fractional numbers.
     protected final int PRECISION = 20;
+    
+    // True if the Apfloat values used internally are formatted to be 'pretty', false otherwise.
     protected final boolean PRETTY = true;
     
     protected final String value;
     protected final Precedence precedence;
     protected final Associativity associativity;
-    
     protected final boolean commutative;
     
     // Children.
@@ -26,7 +27,16 @@ abstract class Function {
     protected Function second;
 
     
-    Function(String value, Precedence precedence, Associativity associativity, boolean commutative) {
+    /**
+     * Constructor.
+     * 
+     * @param value The string representation of this Function.
+     * @param precedence The precedence of this Function.
+     * @param associativity The associativity of this Function.
+     * @param commutative True if this function is commutative, false otherwise.
+     */
+    Function(String value, Precedence precedence, Associativity associativity, 
+            boolean commutative) {
         this.value = value;
         this.precedence = precedence;
         this.associativity = associativity;
@@ -35,7 +45,7 @@ abstract class Function {
         first = null;
         second = null;
         
-        commutative = false; //TODO set this properly
+        commutative = false;
     }
     
     
@@ -127,35 +137,60 @@ abstract class Function {
     
     
     /**
-     * Get the second child Node.
+     * Get the second child Function.
      * 
-     * @return The second child Node.
+     * @return The second child Function.
      */
     protected Function getSecondChild() {
         return second;
     }
     
     
+    /**
+     * Get the mathematical precedence of this Function.
+     * 
+     * @return The mathematical precedence of this Function.
+     */
     Precedence getPrecedence() {
         return precedence;
     }
     
     
+    /**
+     * Get the associativity of this Function. This can be either RIGHT or LEFT.
+     * 
+     * @return The associativity of this Function.
+     */
     Associativity getAssociativity() {
         return associativity;
     }
     
     
+    /**
+     * Add the first child to this Function.
+     * 
+     * @param child The Function to add as the first child of this Function.
+     */
     void setFirstChild(Function child) {
         first = child;
     }
     
     
+    /**
+     * Add a second child to this Function.
+     * 
+     * @param child The Function to add as the second child of this Function.
+     */
     void setSecondChild(Function child) {
         second = child;
     }
     
     
+    /**
+     * Get the value of the Function.
+     * 
+     * @return The value of the Function.
+     */
     String getValue() {
         return value;
     }
@@ -187,8 +222,24 @@ abstract class Function {
         return str;
     }
     
-
-    public boolean equals(Function other) {
+    
+    @Override
+    public boolean equals(Object other) {
+        
+        if (other instanceof Function)
+            return equalsFunction((Function)other);
+        return false;
+    }
+    
+    
+    /**
+     * Tests for equality between this and another Function.
+     * 
+     * @param other The other Function with which to determine equality.
+     * 
+     * @return True if this Function equals the other, false otherwise.
+     */
+    private boolean equalsFunction(Function other) {
         
         // The two functions are exactly equal.
         boolean equal = getValue().equals(other.getValue())
@@ -224,7 +275,7 @@ abstract class Function {
     
     
     /**
-     * The associativity of the Node.
+     * The associativity of a Function.
      */
     protected enum Associativity {
         LEFT, RIGHT;

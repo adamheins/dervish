@@ -25,7 +25,7 @@ public class Variable extends Function {
         // Replaces itself with the appropriate value, or just leaves itself in if a value for this
         // variable is not defined in the map.
         if (varMap != null && varMap.containsKey(value)) 
-            return varMap.get(value).evaluate(varMap); // need to deal with recursion
+            return varMap.get(value).evaluate(varMap);
         
         // If this variable is not defined in the map, just return a new copy of itself.
         return new Variable(value);

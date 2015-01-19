@@ -15,11 +15,23 @@ public class FunctionParser {
         FunctionBuilder fb = new FunctionBuilder();
         
         for (int index = 0; index < functionString.length(); ) {
-            if (functionString.charAt(index) == '+') {
+            if (Character.isWhitespace(functionString.charAt(index))) {
+                index++;
+            } else if (functionString.charAt(index) == '+') {
                 fb.add(new Plus(), bracketCounter);
                 index++;
             } else if (functionString.charAt(index) == '-') {
-                fb.add(new Minus(), bracketCounter);
+                
+                if (fb.current == null) {
+                    fb.add(new Negative(), bracketCounter);
+                } else {
+                    Function prev = fb.current.function;
+                    if (prev instanceof Number || prev instanceof Variable) {
+                        fb.add(new Minus(), bracketCounter);
+                    } else {
+                        fb.add(new Negative(), bracketCounter);
+                    }
+                }
                 index++;
             } else if (functionString.charAt(index) == '*') {
                 fb.add(new Multiply(), bracketCounter);

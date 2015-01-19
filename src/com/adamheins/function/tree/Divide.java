@@ -23,10 +23,6 @@ public class Divide extends Function {
             return new Number(firstValue.divide(secondValue).toString(PRETTY));
         }
         
-        if (first instanceof Multiply) {
-           // TODO eliminate common terms from numerator and denominator
-        }
-        
         Function me = new Divide();
         me.setFirstChild(first);
         me.setSecondChild(second);
@@ -51,30 +47,9 @@ public class Divide extends Function {
         fb.add(new Exponent(), 0);
         fb.add(new Number("2"), 0);
         
-        /*Function derivative = new Divide();
-        
-        Function minus = new Minus();
-        
-        Function mult1 = new Multiply();
-        Function mult2 = new Multiply();
-        Function mult3 = new Multiply();
-        
-        mult1.setFirstChild(getFirstChild().differentiateInternal(var));
-        mult1.setSecondChild(getSecondChild());
-        
-        mult2.setFirstChild(getFirstChild());
-        mult2.setSecondChild(getSecondChild().differentiateInternal(var));
-        
-        minus.setFirstChild(mult1);
-        minus.setSecondChild(mult2);
-        
-        mult3.setFirstChild(getSecondChild());
-        mult3.setSecondChild(getSecondChild());
-        
-        derivative.setFirstChild(minus);
-        derivative.setSecondChild(mult3);*/
+        Function derivative = fb.getFunction();
 
-        return fb.getFunction();
+        return derivative;
     }
 
 }

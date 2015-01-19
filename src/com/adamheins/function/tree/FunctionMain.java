@@ -6,15 +6,16 @@ import java.io.InputStreamReader;
 
 /*
  * Re-add polymorphic toString() behaviour.
- * Add an "exact" mode which avoids evaluating expressions that results in inexact values.
  * Use a FunctionBuilder to create differentiation trees.
- * 
  * Add a field to Numbers containing an Apfloat value field.
- * Polymorphic way to check for number and do calculations
- * Simplify way to design each evaluation method.
- * 
  */
 
+
+/**
+ * Entry point for the interactive program.
+ * 
+ * @author Adam
+ */
 public class FunctionMain {
         
     public static void main(String args[]) {
@@ -23,9 +24,19 @@ public class FunctionMain {
         String input;
         CommandParser parser = new CommandParser();
         
+        System.out.println("Function Shell started:");
+        
         try {
-            while ((input = reader.readLine()) != null)
-                System.out.print(parser.parse(input));
+            while ((input = reader.readLine()) != null) {
+                
+                // Stop execution after user enters 'exit'.
+                if (input.length() >= 4 && input.substring(0, 4).equals("exit"))
+                    break;
+                String result = parser.parse(input);
+                if (!result.equals(""))
+                    System.out.println(result);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

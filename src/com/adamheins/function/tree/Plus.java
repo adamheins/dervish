@@ -9,16 +9,6 @@ public class Plus extends Function {
     public Plus() {
         super("+", Precedence.ADDITION, Associativity.LEFT, true);
     }
-
-
-    @Override
-    public Function differentiateInternal(String var) {
-        
-        Function derivative = new Plus();
-        derivative.setFirstChild(getFirstChild().differentiateInternal(var));
-        derivative.setSecondChild(getSecondChild().differentiateInternal(var));
-        return derivative;
-    }
     
     
     @Override
@@ -52,5 +42,15 @@ public class Plus extends Function {
         me.setSecondChild(second);
         
         return me;
+    }
+    
+    
+    @Override
+    public Function differentiateInternal(String var) {
+        
+        Function derivative = new Plus();
+        derivative.setFirstChild(getFirstChild().differentiateInternal(var));
+        derivative.setSecondChild(getSecondChild().differentiateInternal(var));
+        return derivative;
     }
 }

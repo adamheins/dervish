@@ -7,7 +7,7 @@ import org.apfloat.ApfloatMath;
 
 public class Log extends Function {
 
-    
+    // The base of the logarithm.
     String base;
     
     public Log(String base) {
@@ -37,7 +37,6 @@ public class Log extends Function {
         
         Function me = new Log(base);
         me.setFirstChild(child);
-        
         return me;
     }
 
@@ -45,15 +44,18 @@ public class Log extends Function {
     @Override
     public Function differentiateInternal(String var) {
         
-        // Transform to equivalent form using only natural logarithm.
-        Function coeff = new Number(Double.toString(1/Math.log(Double.parseDouble(base))));
-        Function ln = new Ln();
-        ln.setFirstChild(getFirstChild().evaluate());
-        Function mult = new Multiply();
-        mult.setFirstChild(coeff);
-        mult.setSecondChild(ln);
+        Apfloat baseVal = new Apfloat(base, PRECISION);
+        Apfloat coefficient = Apfloat.ONE.divide(ApfloatMath.log(baseVal));
         
-        return mult.differentiateInternal(var);
+        FunctionBuilder fb = new FunctionBuilder();
+        fb.add(new Number(coefficient.toString(PRETTY)), 0);
+        fb.add(new Multiply(), 0);
+        fb.add(new Ln(), 0);
+        fb.add(getFirstChild().evaluate(), 0);
+        
+        Function derivative = fb.getFunction().differentiateInternal(var);
+        
+        return derivative;
     }
 
 }
