@@ -389,7 +389,7 @@ public class Tests {
     @Test
     public void testParseInteger() {
         String math = "34";
-        FunctionParser fp = new FunctionParser();
+        FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("34");
         
@@ -400,7 +400,7 @@ public class Tests {
     @Test
     public void testParseFloat() {
         String math = "12.345";
-        FunctionParser fp = new FunctionParser();
+        FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("12.345");
         

@@ -1,7 +1,9 @@
 package com.adamheins.function.tree;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /*
@@ -19,9 +21,71 @@ public class CommandParser {
     // Map of user defined variables names and values.
     Map<String, Function> varMap;
     
+    List<String> varList;
+    
     
     CommandParser() {
         varMap = new HashMap<String, Function>();
+        varList = new ArrayList<String>();
+    }
+    
+    
+    private String use(String[] tokens) {
+        if (tokens.length < 2)
+            return "Missing argument: use <variables(s)>.";
+        for (int i = 1; i < tokens.length; ++i) {
+            varList.add(tokens[i]);
+        }
+        return "";
+    }
+    
+    
+    private String forget(String[] tokens) {
+        if (tokens.length < 2)
+            return "Missing argument: use <variables(s)>.";
+        
+        // Clear all variables.
+        if (tokens[1].equals("all")) {
+            varList = new ArrayList<String>();
+            varMap = new HashMap<String, Function>();
+        }
+        
+        // Clear individual variables.
+        for (int i = 1; i < tokens.length; ++i) {
+            varList.remove(tokens[i]);
+            if (varMap.containsKey(tokens[i]))
+                varMap.remove(tokens[i]);
+        }
+        
+        return "";
+    }
+    
+    
+    private String sub(String[] tokens) {
+        
+        if (tokens.length == 1)
+            return "Missing argument: eval <expression>.";
+        
+        FunctionParser fp = new FunctionParser(varList);
+        Function function;
+        try {
+            function = fp.parse(tokens[1]);
+        } catch (Exception e) {
+            return "Parsing error.";
+        }
+        
+        if (tokens.length == 2)
+            return function.evaluate().toString();
+        if (tokens[2].equals("all"))
+            return function.evaluate(varMap).toString();
+        
+        Map<String, Function> varSubMap = new HashMap<String, Function>();
+        for (int i = 2; i < tokens.length; ++i) {
+            if (!varMap.containsKey(tokens[i]))
+                return "Error! Variable '" + tokens[i] + "' has no value.";
+            varSubMap.put(tokens[i], varMap.get(tokens[i]));
+        }
+        return function.evaluate(varSubMap).toString();
     }
     
     
@@ -30,9 +94,14 @@ public class CommandParser {
         if (tokens.length == 1)
             return "Missing argument: eval <expression>.";
         
-        FunctionParser fp = new FunctionParser();
-        Function function = fp.parse(tokens[1]);
-        return function.evaluate(varMap).toString();
+        FunctionParser fp = new FunctionParser(varList);
+        Function function;
+        try {
+            function = fp.parse(tokens[1]);
+        } catch (Exception e) {
+            return "Parsing error.";
+        }
+        return function.evaluate().toString();
     }
     
     
@@ -41,8 +110,13 @@ public class CommandParser {
         if (tokens.length < 3)
             return "Missing argument(s): diff <expression> <variable>.";
         
-        FunctionParser parser = new FunctionParser();
-        Function function = parser.parse(tokens[1]);
+        FunctionParser parser = new FunctionParser(varList);
+        Function function;
+        try {
+            function = parser.parse(tokens[1]);
+        } catch (Exception e) {
+            return "Parsing error.";
+        }
         return function.differentiate(tokens[2]).toString();
     }
     
@@ -56,14 +130,25 @@ public class CommandParser {
         if (tokens[1].length() > 1)
             return "Variable names may only be a single character long.";
         
-        FunctionParser fp = new FunctionParser();
-        Function varValue = fp.parse(tokens[2]);
+        if (!varList.contains(tokens[1]))
+            return "Unknown variable! Declare variables with 'use <variable(s)>' first.";
+        
+        FunctionParser fp = new FunctionParser(varList);
+        Function varValue;
+        try {
+            varValue = fp.parse(tokens[2]);
+        } catch (Exception e) {
+            return "Parsing error.";
+        }
         
         // Disallow recursive variable definitions.
         if (varValue.toString().contains(tokens[1]))
             return "Variable value cannot contain itself.";
         
-        //TODO cycle detection in variable values
+        // Check for potentional cycle in the variable map.
+        VariableVerifier verifier = new VariableVerifier(varMap);
+        if (!verifier.verify(tokens[1], varValue))
+            return "Error: variable definition contains cycle.";
         
         varMap.put(tokens[1], varValue);
         return "";
@@ -93,21 +178,28 @@ public class CommandParser {
         if (tokens.length < 2)
             return "Missing argument: show <variables(s)>.";
         
-        String varList = "";
+        if (varList.isEmpty())
+            return "No variables defined.";
+        
+        String str = "Using:\n";
+        for (String var : varList) {
+            str += var + " ";
+        }
+        str += "\nValued:\n";
+
         if (tokens[1].equals("all")) {
             for (Map.Entry<String, Function> entry : varMap.entrySet()) {
-                varList += entry.getKey() + " = " + entry.getValue() + "\n"; //TODO need something better than blind \n
+                str += entry.getKey() + " = " + entry.getValue() + "\n"; //TODO need something better than blind \n
             }
         } else {
             Arrays.sort(tokens);
             for (Map.Entry<String, Function> entry : varMap.entrySet()) {
                 if (Arrays.binarySearch(tokens, entry.getKey()) >= 0)
-                    varList += entry.getKey() + " = " + entry.getValue() + "\n";
+                    str += entry.getKey() + " = " + entry.getValue() + "\n";
             }
         }
-        if (varList.equals(""))
-            return "No variables defined.";
-        return varList;
+
+        return str.trim();
     }
     
     
@@ -118,7 +210,13 @@ public class CommandParser {
         if (tokens.length == 0)
             return "";
         
-        if (tokens[0].equals("eval")) {
+        if (tokens[0].equals("use")) {
+            return use(tokens);
+        } else if (tokens[0].equals("forget")) {
+            return forget(tokens);
+        } else if (tokens[0].equals("sub")) {
+            return sub(tokens);
+        } else if (tokens[0].equals("eval")) {
             return eval(tokens);
         } else if (tokens[0].equals("diff")) {
             return diff(tokens);

@@ -1,16 +1,20 @@
 package com.adamheins.function.tree;
 
+import java.util.List;
+
 public class FunctionParser {
     
     
+    List<String> varList;
     int bracketCounter;
     
-    public FunctionParser() {
+    public FunctionParser(List<String> varList) {
         bracketCounter = 0;
+        this.varList = varList;
     }
     
     
-    public Function parse(String functionString) {
+    public Function parse(String functionString) throws Exception {
         
         FunctionBuilder fb = new FunctionBuilder();
         
@@ -70,8 +74,18 @@ public class FunctionParser {
                     index++;
                 fb.add(new Number(functionString.substring(start, index)), bracketCounter);
             } else {
-                fb.add(new Variable(functionString.substring(index, index + 1)), bracketCounter);
-                index++;
+                boolean flag = false;
+                for (String var : varList) {
+                    if (substringAt(functionString, var, index)) {
+                        fb.add(new Variable(functionString.substring(index, index + var.length())), bracketCounter);
+                        index += var.length();
+                        flag = true;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    throw new Exception("Unrecoginized character!"); //TODO make custom exception.
+                }
             }
         }
         
@@ -80,7 +94,7 @@ public class FunctionParser {
     
     
     private static boolean substringAt(String str, String sub, int start) {
-        if (start + sub.length() >= str.length())
+        if (start + sub.length() > str.length())
             return false;
         return str.substring(start, start + sub.length()).equals(sub);
     }
