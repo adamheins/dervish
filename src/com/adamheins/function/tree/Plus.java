@@ -20,23 +20,18 @@ public class Plus extends Function {
         
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
-            
-            Apfloat firstVal = new Apfloat(first.getValue(), PRECISION);
-            Apfloat secondVal = new Apfloat(second.getValue(), PRECISION);
-            return new Number(firstVal.add(secondVal).toString(PRETTY));
+            Apfloat firstVal = ((Number)first).getNumericValue();
+            Apfloat secondVal = ((Number)second).getNumericValue();
+            return new Number(firstVal.add(secondVal));
         }
         
-        // If one of the children is equal to zero, there is no point having it in the expression.
-        if (first instanceof Number) {
-            Apfloat firstVal = new Apfloat(first.getValue());
-            if (firstVal.equals(Apfloat.ZERO))
-                return second;
-        } else if (second instanceof Number) {
-            Apfloat secondVal = new Apfloat(second.getValue());
-            if (secondVal.equals(Apfloat.ZERO))
-                return first;
-        }
+        // Get rid of unnecessary zero terms.
+        if (first.equals(Number.ZERO))
+            return second;
+        if (second.equals(Number.ZERO))
+            return first;
         
+        // Return copy of the Plus.
         Function me = new Plus();
         me.setFirstChild(first);
         me.setSecondChild(second);

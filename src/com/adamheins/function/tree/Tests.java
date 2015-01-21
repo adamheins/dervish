@@ -143,7 +143,7 @@ public class Tests {
         
         Function result = fb.getFunction();
         
-        Assert.assertEquals("x", result.toString());
+        Assert.assertEquals(new Variable("x"), result);
     }
     
     

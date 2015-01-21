@@ -15,7 +15,7 @@ abstract class Function {
     protected final int PRECISION = 20;
     
     // True if the Apfloat values used internally are formatted to be 'pretty', false otherwise.
-    protected final boolean PRETTY = true;
+    protected final static boolean PRETTY = true;
     
     protected final String value;
     protected final Precedence precedence;

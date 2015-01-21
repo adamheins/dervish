@@ -4,6 +4,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * use & forget commands
+ * help command
+ * 
+ * chain commands - parse the command backwards
+ * 
+ * sub and eval as distinct commands
+ *  eval <expression> sub <variable(s)/all>
+ */
+
 public class CommandParser {
     
     // Map of user defined variables names and values.
