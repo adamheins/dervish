@@ -24,17 +24,33 @@ public class FunctionMain {
         String input;
         CommandParser parser = new CommandParser();
         
-        System.out.println("Function Shell started:");
+        System.out.println("function shell");
         
         try {
+            System.out.print("> ");
             while ((input = reader.readLine()) != null) {
-                
+
                 // Stop execution after user enters 'exit'.
-                if (input.length() >= 4 && input.substring(0, 4).equals("exit"))
+                if (input.length() >= 4 && input.substring(0, 4).toLowerCase().equals("exit"))
                     break;
-                String result = parser.parse(input);
-                if (!result.equals(""))
-                    System.out.println(result);
+                try {
+                    String result = parser.parse(input);
+                    if (!result.equals(""))
+                        System.out.println(result);
+                } catch (MissingArgumentException e) {
+                    System.out.println(e.getMessage());
+                } catch (UndefinedVariableException e) {
+                    System.out.println(e.getMessage());
+                } catch (ParsingException e) {
+                    System.out.println(e.getMessage());
+                } catch (UnknownVariableException e) {
+                    System.out.println(e.getMessage());
+                } catch (CyclicVariableException e) {
+                    System.out.println(e.getMessage());
+                } catch (LastExpressionException e) {
+                    System.out.println(e.getMessage());
+                }
+                System.out.print("> ");
             }
 
         } catch (IOException e) {

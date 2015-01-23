@@ -2,6 +2,14 @@ package com.adamheins.function.tree;
 
 import java.util.List;
 
+
+class ParsingException extends Exception {
+    ParsingException(String msg) {
+        super(msg);
+    }
+}
+
+
 public class FunctionParser {
     
     
@@ -14,7 +22,7 @@ public class FunctionParser {
     }
     
     
-    public Function parse(String functionString) throws Exception {
+    public Function parse(String functionString) throws ParsingException {
         
         FunctionBuilder fb = new FunctionBuilder();
         
@@ -84,7 +92,7 @@ public class FunctionParser {
                     }
                 }
                 if (!flag) {
-                    throw new Exception("Unrecoginized character!"); //TODO make custom exception.
+                    throw new ParsingException("Unrecoginized character!");
                 }
             }
         }

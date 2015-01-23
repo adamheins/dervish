@@ -1,5 +1,9 @@
 package com.adamheins.function.tree;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -387,7 +391,7 @@ public class Tests {
     /* Parsing tests */
     
     @Test
-    public void testParseInteger() {
+    public void testParseInteger() throws ParsingException {
         String math = "34";
         FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
@@ -398,7 +402,7 @@ public class Tests {
     
     
     @Test
-    public void testParseFloat() {
+    public void testParseFloat() throws ParsingException {
         String math = "12.345";
         FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
@@ -409,9 +413,9 @@ public class Tests {
     
     
     @Test
-    public void testParseNegativeNumber() {
+    public void testParseNegativeNumber() throws ParsingException {
         String math = "-156";
-        FunctionParser fp = new FunctionParser();
+        FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("-156");
         
@@ -420,9 +424,9 @@ public class Tests {
     
     
     @Test
-    public void testParseAddition() {
+    public void testParseAddition() throws ParsingException {
         String math = "34+1.3";
-        FunctionParser fp = new FunctionParser();
+        FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("35.3");
         
@@ -431,9 +435,9 @@ public class Tests {
     
     
     @Test
-    public void testParseSubtraction() {
+    public void testParseSubtraction() throws ParsingException {
         String math = "35.6-10.4";
-        FunctionParser fp = new FunctionParser();
+        FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("25.2");
         
@@ -442,9 +446,9 @@ public class Tests {
     
     
     @Test
-    public void testParseMultiply() {
+    public void testParseMultiply() throws ParsingException {
         String math = "50*4";
-        FunctionParser fp = new FunctionParser();
+        FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("200");
         
@@ -453,9 +457,9 @@ public class Tests {
     
     
     @Test
-    public void testParseDivide() {
+    public void testParseDivide() throws ParsingException {
         String math = "12/3";
-        FunctionParser fp = new FunctionParser();
+        FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("4");
         
@@ -464,9 +468,9 @@ public class Tests {
     
     
     @Test
-    public void testParseExponent() {
+    public void testParseExponent() throws ParsingException {
         String math = "5^2";
-        FunctionParser fp = new FunctionParser();
+        FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("25");
         
@@ -475,9 +479,9 @@ public class Tests {
     
     
     @Test
-    public void testParseBrackets() {
+    public void testParseBrackets() throws ParsingException {
         String math = "2*(3+4)";
-        FunctionParser fp = new FunctionParser();
+        FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("14");
 
@@ -486,9 +490,11 @@ public class Tests {
 
 
     @Test
-    public void testParseVariable() {
+    public void testParseVariable() throws ParsingException {
         String math = "x";
-        FunctionParser fp = new FunctionParser();
+        List<String> varList = new ArrayList<String>();
+        varList.add("x");
+        FunctionParser fp = new FunctionParser(varList);
         Function actual = fp.parse(math);
         Function expected = new Variable("x");
         
@@ -497,9 +503,11 @@ public class Tests {
     
     
     @Test
-    public void testParseSin() {
+    public void testParseSin() throws ParsingException {
         String math = "sinx";
-        FunctionParser fp = new FunctionParser();
+        List<String> varList = new ArrayList<String>();
+        varList.add("x");
+        FunctionParser fp = new FunctionParser(varList);
         Function actual = fp.parse(math);
         
         FunctionBuilder fb = new FunctionBuilder();
@@ -512,9 +520,11 @@ public class Tests {
     
     
     @Test
-    public void testParseCos() {
+    public void testParseCos() throws ParsingException {
         String math = "cosx";
-        FunctionParser fp = new FunctionParser();
+        List<String> varList = new ArrayList<String>();
+        varList.add("x");
+        FunctionParser fp = new FunctionParser(varList);
         Function actual = fp.parse(math);
         
         FunctionBuilder fb = new FunctionBuilder();
@@ -527,9 +537,11 @@ public class Tests {
     
     
     @Test
-    public void testParseTan() {
+    public void testParseTan() throws ParsingException {
         String math = "tanx";
-        FunctionParser fp = new FunctionParser();
+        List<String> varList = new ArrayList<String>();
+        varList.add("x");
+        FunctionParser fp = new FunctionParser(varList);
         Function actual = fp.parse(math);
         
         FunctionBuilder fb = new FunctionBuilder();
@@ -542,9 +554,11 @@ public class Tests {
     
     
     @Test
-    public void testParseLn() {
+    public void testParseLn() throws ParsingException {
         String math = "lnx";
-        FunctionParser fp = new FunctionParser();
+        List<String> varList = new ArrayList<String>();
+        varList.add("x");
+        FunctionParser fp = new FunctionParser(varList);
         Function actual = fp.parse(math);
         
         FunctionBuilder fb = new FunctionBuilder();
@@ -557,9 +571,11 @@ public class Tests {
 
     
     @Test
-    public void testParseLog() {
+    public void testParseLog() throws ParsingException {
         String math = "logx";
-        FunctionParser fp = new FunctionParser();
+        List<String> varList = new ArrayList<String>();
+        varList.add("x");
+        FunctionParser fp = new FunctionParser(varList);
         Function actual = fp.parse(math);
         
         FunctionBuilder fb = new FunctionBuilder();
@@ -573,7 +589,7 @@ public class Tests {
     /* Command parsing tests */
     
     @Test
-    public void testParseCommandEval() {
+    public void testParseCommandEval() throws Exception {
         String input = "eval 3+4";
         CommandParser cp = new CommandParser();
         String actual = cp.parse(input);
