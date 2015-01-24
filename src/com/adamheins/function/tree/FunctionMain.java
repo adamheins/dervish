@@ -1,6 +1,8 @@
 package com.adamheins.function.tree;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -20,14 +22,28 @@ public class FunctionMain {
         
     public static void main(String args[]) {
         
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        // If there is an arg, it should be a file name.
+        boolean fromFile = args.length > 0;
+        
+        // Create a reader for either stdin or a file.
+        BufferedReader reader = null;
+        if (fromFile)
+            try {
+                reader = new BufferedReader(new FileReader(args[0]));
+            } catch (FileNotFoundException e) {
+                System.out.println("File '" + args[0] + "' not found.");
+            }
+        else
+            reader = new BufferedReader(new InputStreamReader(System.in));
+        
         String input;
         CommandParser parser = new CommandParser();
         
         System.out.println("function shell");
         
         try {
-            System.out.print("> ");
+            if (!fromFile)
+                System.out.print("> ");
             while ((input = reader.readLine()) != null) {
 
                 // Stop execution after user enters 'exit'.
@@ -50,7 +66,8 @@ public class FunctionMain {
                 } catch (LastExpressionException e) {
                     System.out.println(e.getMessage());
                 }
-                System.out.print("> ");
+                if (!fromFile)
+                    System.out.print("> ");
             }
 
         } catch (IOException e) {

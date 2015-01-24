@@ -4,6 +4,9 @@ import java.util.List;
 
 
 class ParsingException extends Exception {
+    
+    private static final long serialVersionUID = 5377397872629670761L;
+
     ParsingException(String msg) {
         super(msg);
     }
@@ -92,7 +95,7 @@ public class FunctionParser {
                     }
                 }
                 if (!flag) {
-                    throw new ParsingException("Unrecoginized character!");
+                    throw new ParsingException("Unrecoginized character while parsing.");
                 }
             }
         }

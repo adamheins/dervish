@@ -82,9 +82,14 @@ public class CommandParser {
     // Map of user defined variables names and values.
     Map<String, Function> varMap;
     
+    // List of variables that are being used by the program.
     List<String> varList;
     
-    private static final List<String> KEYWORDS = Arrays.asList("use", "forget", "eval", "sub", "diff", "help", "exit", "set", "clear", "show");
+    // Keywords, which cannot be the names of variables.
+    private static final List<String> KEYWORDS = Arrays.asList("use", "forget", "eval", "sub", 
+            "diff", "help", "exit", "set", "clear", "show", "log", "ln", "sin", "cos", "tan");
+    
+    // String representing the 'last' variable.
     private final String LAST = "$";
     
     CommandParser() {
@@ -100,8 +105,9 @@ public class CommandParser {
         tokens.remove(0);
         
         // Add new variables to the list.
-        for (String token : tokens) //TODO need to throw an error if keyword is used here
-            varList.add(token);
+        for (String token : tokens)
+            if (isComposedOfLetters(token) && !KEYWORDS.contains(token))
+                varList.add(token);
         return "";
     }
     
@@ -199,7 +205,9 @@ public class CommandParser {
     }
     
     
-    private String set(List<String> tokens) throws MissingArgumentException, UnknownVariableException, ParsingException, CyclicVariableException {
+    private String set(List<String> tokens) throws MissingArgumentException, 
+            UnknownVariableException, ParsingException, CyclicVariableException, 
+            UndefinedVariableException, LastExpressionException {
         
         if (tokens.size() < 3)
             throw new MissingArgumentException("Missing argument(s): set <variable> <expression>.");
@@ -207,19 +215,28 @@ public class CommandParser {
         if (!varList.contains(tokens.get(1)))
             throw new UnknownVariableException("Unknown variable! Declare variables with 'use <variable(s)>' first.");
         
+        String var = tokens.get(1);
+        String funcStr = tokens.get(2);
+        
+        if (tokens.size() > 3) {
+            tokens.remove(0);
+            tokens.remove(0);
+            funcStr = parseCommand(tokens);
+        }
+        
         FunctionParser fp = new FunctionParser(varList);
-        Function varValue = fp.parse(tokens.get(2));
+        Function varValue = fp.parse(funcStr);
         
         // Disallow recursive variable definitions.
-        if (varValue.toString().contains(tokens.get(1)))
+        if (varValue.toString().contains(var))
             throw new CyclicVariableException("Variable value cannot contain itself.");
         
         // Check for potentional cycle in the variable map.
         VariableVerifier verifier = new VariableVerifier(varMap);
-        if (!verifier.verify(tokens.get(1), varValue))
+        if (!verifier.verify(var, varValue))
             throw new CyclicVariableException("Variable definition contains cycle.");
         
-        varMap.put(tokens.get(1), varValue);
+        varMap.put(var, varValue);
         return "";
     }
     
@@ -254,9 +271,10 @@ public class CommandParser {
     
     private String show(List<String> tokens) throws MissingArgumentException {
         
-        if (tokens.size() < 2)
-            throw new MissingArgumentException("Missing argument: show <variables(s)>.");
+        //if (tokens.size() < 2)
+        //    throw new MissingArgumentException("Missing argument: show <variables(s)>.");
         
+        // No variables are defined, return empty string.
         if (varList.isEmpty())
             return "";
         
@@ -269,7 +287,7 @@ public class CommandParser {
         
         str += "\nValued:\n";
 
-        if (tokens.get(1).equals("all")) {
+        if (tokens.size() == 1 || tokens.get(1).equals("all")) {
             for (Map.Entry<String, Function> entry : varMap.entrySet()) {
                 str += entry.getKey() + " = " + entry.getValue() + "\n";
             }
@@ -336,5 +354,21 @@ public class CommandParser {
         for (String ele : arr)
             list.add(ele);
         return list;
+    }
+    
+    
+    /**
+     * Checks if a string is composed of letters.
+     * 
+     * @param str The string to check.
+     * 
+     * @return True if the string is composed of letters, false otherwise.
+     */
+    private boolean isComposedOfLetters(String str) {
+        for (int i = 0; i < str.length(); ++i) {
+            if (!Character.isAlphabetic(str.charAt(i)))
+                return false;
+        }
+        return true;
     }
 }
