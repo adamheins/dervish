@@ -167,40 +167,72 @@ public class CommandParser {
     }
     
     
+    /**
+     * Command for evaluating a function.
+     * 
+     * @param tokens List of tokens from the command string.
+     * 
+     * @return A string representing the evaluated function.
+     * 
+     * @throws MissingArgumentException If no function is given.
+     * @throws ParsingException If the given function fails to parse.
+     */
     private String eval(List<String> tokens) throws MissingArgumentException, ParsingException {
         
         if (tokens.size() == 1)
             throw new MissingArgumentException("Missing argument: eval <expression>.");
         
-        tokens.remove(0);
+        String funcStr = tokens.get(1);
         
-        String exprStr = tokens.get(0);
-        
+        // Parse the function.
         FunctionParser fp = new FunctionParser(varList);
-        Function function = fp.parse(exprStr);
+        Function function = fp.parse(funcStr);
+        
+        // If the LAST value exists, substitute it. The LAST variable is always substituted.
         if (varMap.containsKey(LAST)) {
             Map<String, Function> lastMap = new HashMap<String, Function>();
             lastMap.put(LAST, varMap.get(LAST));
             function = function.evaluate(lastMap);
         }
+        
+        // Set the value of the LAST variable to this result.
         varMap.put(LAST, function);
+        
         return function.toString();
     }
     
     
+    /**
+     * Command to differentiate a function with respect to a given variable.
+     * 
+     * @param tokens List of tokens from the command string.
+     * 
+     * @return A string representing the evaluated function.
+     * 
+     * @throws MissingArgumentException If the function or variable are missing.
+     * @throws ParsingException If the given function fails to parse.
+     */
     private String diff(List<String> tokens) throws MissingArgumentException, ParsingException {
         
         if (tokens.size() < 3)
-            throw new MissingArgumentException("Missing argument(s): diff <expression> <variable>.");
+            throw new MissingArgumentException("Missing argument(s): diff <function> <variable>.");
         
-        tokens.remove(0);
+        String funcStr = tokens.get(1);
         
-        String exprStr = tokens.get(0);
-        
+        // Parse the function.
         FunctionParser parser = new FunctionParser(varList);
-        Function function = parser.parse(exprStr);
-        Function derivative = function.differentiate(tokens.get(1));
+        Function function = parser.parse(funcStr);
+        
+        // Substitute the LAST variable into the function.
+        if (varMap.containsKey(LAST))
+            function = function.evaluate(getLastVariableMap());
+        
+        // Differentiate the function.
+        Function derivative = function.differentiate(tokens.get(2));
+        
+        // Update LAST variable value.
         varMap.put(LAST, derivative);
+        
         return derivative.toString();
     }
     
@@ -229,7 +261,7 @@ public class CommandParser {
         
         // Disallow recursive variable definitions.
         if (varValue.toString().contains(var))
-            throw new CyclicVariableException("Variable value cannot contain itself.");
+            throw new CyclicVariableException("Variable value cannot contain itself."); //TODO can hopefully be caught by VariableVerifier
         
         // Check for potentional cycle in the variable map.
         VariableVerifier verifier = new VariableVerifier(varMap);
@@ -370,5 +402,12 @@ public class CommandParser {
                 return false;
         }
         return true;
+    }
+    
+    
+    private Map<String, Function> getLastVariableMap() {
+        Map<String, Function> lastMap = new HashMap<String, Function>();
+        lastMap.put(LAST, varMap.get(LAST));
+        return lastMap;
     }
 }

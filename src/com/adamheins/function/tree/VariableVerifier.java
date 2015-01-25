@@ -46,7 +46,13 @@ public class VariableVerifier {
         
         List<String> vars = func.getVariables();
         for (String v : vars) {
-            if (!verify(v, varMap.get(v)))
+            
+            // Variable value contains itself.
+            if (v.equals(var))
+                return false;
+            
+            // Recursively verify child variable.
+            if (varMap != null && !verify(v, varMap.get(v)))
                 return false;
         }
         
