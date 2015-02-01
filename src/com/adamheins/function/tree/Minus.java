@@ -20,23 +20,15 @@ public class Minus extends Function {
         
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
-            Apfloat firstValue = new Apfloat(first.getValue(), PRECISION);
-            Apfloat secondValue = new Apfloat(second.getValue(), PRECISION);
-            Apfloat result = firstValue.subtract(secondValue);
-            return new Number(result.toString(PRETTY));
+            Apfloat firstValue = (Apfloat)first.getValue();
+            Apfloat secondValue = (Apfloat)second.getValue();
+            return new Number(firstValue.subtract(secondValue));
         }
         
-        if (first instanceof Number) {
-            Apfloat firstValue = new Apfloat(first.getValue());
-            if (firstValue.equals(Apfloat.ZERO)) {
-                Function neg = new Negative();
-                neg.setFirstChild(second);
-                return neg;
-            }
-        } else if (second instanceof Number) {
-            Apfloat secondValue = new Apfloat(second.getValue());
-            if (secondValue.equals(Apfloat.ZERO))
-                return first;
+        if (first.equals(Number.ZERO)) {
+            return second;
+        } else if (second.equals(Number.ZERO)) {
+            return first;
         }
         
         Function me = new Minus();

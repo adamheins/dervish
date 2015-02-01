@@ -17,8 +17,7 @@ public class Tan extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if(child instanceof Number) {
-            Apfloat value = new Apfloat(child.getValue(), PRECISION);
-            return new Number(ApfloatMath.tan(value).toString(PRETTY));
+            return new Number(ApfloatMath.tan((Apfloat)child.getValue()));
         }
         
         Function me = new Tan();

@@ -18,8 +18,7 @@ public class Ln extends Log {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            Apfloat value = new Apfloat(child.getValue(), PRECISION);
-            return new Number(ApfloatMath.log(value).toString(PRETTY));
+            return new Number(ApfloatMath.log((Apfloat)child.getValue()));
         }
 
         Function me = new Ln();

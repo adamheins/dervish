@@ -12,12 +12,12 @@ abstract class Function {
     // Precision of the results of operations that generate less precise results than the operands.
     // One example is division, which can take infinite-precision integers and produce finite-
     // precision fractional numbers.
-    protected final int PRECISION = 20;
+    protected final static int PRECISION = 20;
     
     // True if the Apfloat values used internally are formatted to be 'pretty', false otherwise.
     protected final static boolean PRETTY = true;
     
-    protected final String value;
+    protected final Object value;
     protected final Precedence precedence;
     protected final Associativity associativity;
     protected final boolean commutative;
@@ -35,7 +35,7 @@ abstract class Function {
      * @param associativity The associativity of this Function.
      * @param commutative True if this function is commutative, false otherwise.
      */
-    Function(String value, Precedence precedence, Associativity associativity, 
+    Function(Object value, Precedence precedence, Associativity associativity, 
             boolean commutative) {
         this.value = value;
         this.precedence = precedence;
@@ -111,7 +111,7 @@ abstract class Function {
             Function current = funcStack.pop();
 
             if (current instanceof Variable) {
-                varList.add(current.getValue());
+                varList.add(current.getValue().toString());
                 continue;
             } else if (current instanceof Number) {
                 continue;
@@ -191,7 +191,7 @@ abstract class Function {
      * 
      * @return The value of the Function.
      */
-    String getValue() {
+    Object getValue() {
         return value;
     }
     
@@ -199,7 +199,7 @@ abstract class Function {
     @Override
     public String toString() {
         if (first == null && second == null)
-            return value;
+            return value.toString();
         
         String str = getFirstChild().toString();
         

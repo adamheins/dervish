@@ -8,19 +8,24 @@ import org.apfloat.ApfloatMath;
 public class Log extends Function {
 
     // The base of the logarithm.
-    String base;
+    Apfloat base;
     
     public Log(String base) {
         super("log<" + base + ">", Precedence.EXPONENTIATION, Associativity.RIGHT, false);
+        this.base = new Apfloat(base);
+    }
+    
+    // Internal use.
+    private Log(Apfloat base) {
+        super("log<" + base.toString(PRETTY) + ">", Precedence.EXPONENTIATION, Associativity.RIGHT, false);
         this.base = base;
     }
     
     
-    // Super-internal use only.
-    // As opposed to regular internal use.
+    // Internal use.
     protected Log(String base, String value) {
         super(value, Precedence.EXPONENTIATION, Associativity.RIGHT, false);
-        this.base = base;
+        this.base = new Apfloat(base);
     }
 
 
@@ -30,9 +35,8 @@ public class Log extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            Apfloat value = new Apfloat(child.getValue());
-            Apfloat baseValue = new Apfloat(base);
-            return new Number(ApfloatMath.log(value, baseValue).toString(PRETTY));
+            Apfloat value = (Apfloat)child.getValue();
+            return new Number(ApfloatMath.log(value, base));
         }
         
         Function me = new Log(base);
@@ -44,8 +48,7 @@ public class Log extends Function {
     @Override
     public Function differentiateInternal(String var) {
         
-        Apfloat baseVal = new Apfloat(base, PRECISION);
-        Apfloat coefficient = Apfloat.ONE.divide(ApfloatMath.log(baseVal));
+        Apfloat coefficient = Apfloat.ONE.divide(ApfloatMath.log(base));
         
         FunctionBuilder fb = new FunctionBuilder();
         fb.add(new Number(coefficient.toString(PRETTY)), 0);

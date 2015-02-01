@@ -17,8 +17,7 @@ public class Negative extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            Apfloat value = new Apfloat(child.getValue());
-            return new Number(value.negate().toString(PRETTY));
+            return new Number(((Apfloat) child.getValue()).negate());
         }
         
         Function me = new Negative();
@@ -40,7 +39,7 @@ public class Negative extends Function {
     
     @Override
     public String toString() {
-        return "-(" + getFirstChild().toString() + ")";
+        return "-(" + getFirstChild().toString() + ")"; //TODO wouldn't be ideal for numbers
     }
 
 }

@@ -5,9 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Verifies if a variable and its assigned value can be added to the map of variables without
+ * causing a cycle.
+ * 
+ * @author Adam
+ */
 public class VariableVerifier {
     
+    // Existing map of variables.
     Map<String, Function> varMap;
+    
+    // Set of ancestor variables, used when traversing the map.
     Set<String> varSet;
 
     

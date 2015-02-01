@@ -8,8 +8,9 @@ import java.io.InputStreamReader;
 
 /*
  * Re-add polymorphic toString() behaviour.
- * Use a FunctionBuilder to create differentiation trees.
- * Add a field to Numbers containing an Apfloat value field.
+ * Watch out for precision errors - could allow users to change default precision of 20 to something else
+ *     prec <precision> command
+ * Consider splitting CommandParser with FunctionMain state
  */
 
 
@@ -36,14 +37,15 @@ public class FunctionMain {
         else
             reader = new BufferedReader(new InputStreamReader(System.in));
         
-        String input;
-        CommandParser parser = new CommandParser();
-        
-        System.out.println("function shell");
-        
         try {
-            if (!fromFile)
+            
+            String input;
+            CommandParser parser = new CommandParser();
+            
+            if (!fromFile) {
+                System.out.println("Function Shell");
                 System.out.print("> ");
+            }
             while ((input = reader.readLine()) != null) {
 
                 // Stop execution after user enters 'exit'.
@@ -63,7 +65,9 @@ public class FunctionMain {
                     System.out.println(e.getMessage());
                 } catch (CyclicVariableException e) {
                     System.out.println(e.getMessage());
-                } catch (LastExpressionException e) {
+                } catch (LastFunctionException e) {
+                    System.out.println(e.getMessage());
+                } catch (IllegalVariableNameException e) {
                     System.out.println(e.getMessage());
                 }
                 if (!fromFile)

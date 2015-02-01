@@ -16,8 +16,7 @@ public class Cos extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            Apfloat value = new Apfloat(child.getValue(), PRECISION);
-            return new Number(ApfloatMath.cos(value).toString(PRETTY));
+            return new Number(ApfloatMath.cos((Apfloat)child.getValue()));
         }
         
         Function me = new Cos();

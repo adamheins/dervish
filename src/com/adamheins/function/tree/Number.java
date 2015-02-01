@@ -8,13 +8,10 @@ public class Number extends Function {
     
     public static final Number ZERO = new Number("0");
     public static final Number ONE = new Number("1");
-    
-    Apfloat numValue;
    
 
     public Number(String value) {
-        super(value, Precedence.NUMBER, Associativity.LEFT, true);
-        numValue = new Apfloat(value, PRECISION);
+        super(new Apfloat(value, PRECISION), Precedence.NUMBER, Associativity.LEFT, true);
     }
     
     
@@ -24,35 +21,20 @@ public class Number extends Function {
      * 
      * @param numValue The value of the number.
      */
-    Number(Apfloat numValue) {
-        super(numValue.toString(PRETTY), Precedence.NUMBER, Associativity.LEFT, true);
-        this.numValue = numValue;
+    Number(Apfloat value) {
+        super(value, Precedence.NUMBER, Associativity.LEFT, true);
     }
 
     
     @Override
     public Function differentiateInternal(String var) {
-        
-        // Derivative of a constant value is 0.
-        return new Number("0");
+        return Number.ZERO;
     }
     
     
     @Override
     public Function evaluate(Map<String, Function> varMap) {
-        
-        // Return a copy of this number.
-        return new Number(value);
-    }
-    
-    
-    /**
-     * Gets the value of the number as a numberic type.
-     * 
-     * @return The value of the number as a numeric type.
-     */
-    Apfloat getNumericValue() {
-        return numValue;
+        return this;
     }
     
     
@@ -60,6 +42,12 @@ public class Number extends Function {
     public boolean equals(Object other) {
         if (!(other instanceof Number))
             return false;
-        return numValue.equals(((Number)other).numValue);
+        return value.equals(((Number)other).getValue());
+    }
+    
+    
+    @Override
+    public String toString() {
+        return ((Apfloat)value).toString(PRETTY);
     }
 }

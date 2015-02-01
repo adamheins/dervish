@@ -14,8 +14,8 @@ public class Variable extends Function {
         
         // Derivative of a variable is 1.
         if (var.equals(value))
-            return new Number("1");
-        return new Number("0");
+            return Number.ONE;
+        return Number.ZERO;
     }
     
     
@@ -27,7 +27,7 @@ public class Variable extends Function {
         if (varMap != null && varMap.containsKey(value)) 
             return varMap.get(value).evaluate(varMap);
         
-        // If this variable is not defined in the map, just return a new copy of itself.
-        return new Variable(value);
+        // If this variable is not defined in the map, just return itself.
+        return this;
     }
 }

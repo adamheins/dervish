@@ -18,9 +18,17 @@ public class Divide extends Function {
         Function second = getSecondChild().evaluate(varMap);
         
         if (first instanceof Number && second instanceof Number) {
-            Apfloat firstValue = new Apfloat(first.getValue(), PRECISION);
-            Apfloat secondValue = new Apfloat(second.getValue(), PRECISION);
-            return new Number(firstValue.divide(secondValue).toString(PRETTY));
+            Apfloat firstValue = (Apfloat)first.getValue();
+            Apfloat secondValue = (Apfloat)second.getValue();
+            return new Number(firstValue.divide(secondValue));
+        }
+        
+        if (second.equals(Number.ONE)) {
+            return first;
+        } else if (second.equals(Number.ZERO)) {
+            throw new RuntimeException("Division by zero."); //TODO maybe do something better here.
+        } else if (first.equals(Number.ZERO)) {
+            return Number.ZERO;
         }
         
         Function me = new Divide();

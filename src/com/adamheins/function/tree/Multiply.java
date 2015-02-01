@@ -20,24 +20,18 @@ public class Multiply extends Function {
         
         // Check for number children, and evaluate.
         if (first instanceof Number && second instanceof Number) {
-            Apfloat firstVal = new Apfloat(first.getValue(), PRECISION);
-            Apfloat secondVal = new Apfloat(second.getValue(), PRECISION);
-            return new Number(firstVal.multiply(secondVal).toString(PRETTY));
+            Apfloat firstVal = (Apfloat)first.getValue();
+            Apfloat secondVal = (Apfloat)second.getValue();
+            return new Number(firstVal.multiply(secondVal));
         }
         
         // If one of the children is equal to zero, there is no point having it in the expression.
-        if (first instanceof Number) {
-            Apfloat firstVal = new Apfloat(first.getValue());
-            if (firstVal.equals(Apfloat.ZERO))
-                return new Number("0");
-            if (firstVal.equals(Apfloat.ONE))
-                return second;
-        } else if (second instanceof Number) {
-            Apfloat secondVal = new Apfloat(second.getValue());
-            if (secondVal.equals(Apfloat.ZERO))
-                return new Number("0");
-            if (secondVal.equals(Apfloat.ONE))
-                return first;
+        if (first.equals(Number.ZERO) || second.equals(Number.ZERO)) {
+            return Number.ZERO;
+        } else if (first.equals(Number.ONE)) {
+            return second;
+        } else if (second.equals(Number.ONE)) {
+            return first;
         }
         
         Function me = new Multiply();

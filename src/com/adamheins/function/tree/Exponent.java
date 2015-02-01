@@ -19,25 +19,19 @@ public class Exponent extends Function {
         Function second = getSecondChild().evaluate(varMap);
         
         if (first instanceof Number && second instanceof Number) {
-            Apfloat firstValue = new Apfloat(first.getValue(), PRECISION);
-            Apfloat secondValue = new Apfloat(second.getValue(), PRECISION);
-            return new Number(ApfloatMath.pow(firstValue, secondValue).toString(PRETTY));
+            Apfloat firstValue = (Apfloat)first.getValue();
+            Apfloat secondValue = (Apfloat)second.getValue();
+            return new Number(ApfloatMath.pow(firstValue, secondValue));
         }
         
-        if (first instanceof Number) {
-            Apfloat firstValue = new Apfloat(first.getValue());
-            if (firstValue.equals(Apfloat.ZERO))
-                return new Number("0");
-            // TODO add case for base = 1
-        }
-        
-        // Value is always 1 if the exponent is 0.
-        // Ignore exponents with value 1.
-        if (second instanceof Number) {
-           if ((new Apfloat(second.getValue())).equals(Apfloat.ZERO))
-               return new Number("1");
-           if ((new Apfloat(second.getValue())).equals(Apfloat.ONE))
-               return first;
+        if (second.equals(Number.ZERO)) {
+            return Number.ONE;
+        } else if (second.equals(Number.ONE)) {
+            return first;
+        } else if (first.equals(Number.ZERO)) {
+            return Number.ZERO;
+        } else if (first.equals(Number.ONE)) {
+            return Number.ONE;
         }
         
         Function me = new Exponent();
