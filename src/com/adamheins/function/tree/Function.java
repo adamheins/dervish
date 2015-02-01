@@ -12,7 +12,7 @@ abstract class Function {
     // Precision of the results of operations that generate less precise results than the operands.
     // One example is division, which can take infinite-precision integers and produce finite-
     // precision fractional numbers.
-    protected final static int PRECISION = 20;
+    protected static final int PRECISION = 20;
     
     // True if the Apfloat values used internally are formatted to be 'pretty', false otherwise.
     protected final static boolean PRETTY = true;
@@ -44,8 +44,6 @@ abstract class Function {
 
         first = null;
         second = null;
-        
-        commutative = false;
     }
     
     
@@ -198,12 +196,10 @@ abstract class Function {
     
     @Override
     public String toString() {
-        if (first == null && second == null)
-            return value.toString();
         
         String str = getFirstChild().toString();
         
-        if (first.precedence.compareTo(precedence) <= 0) // whether it is <= 0 probably depends on commutativity
+        if (first.precedence.compareTo(precedence) <= 0)
             str = "(" + str + ")";
         
         // Check if this is a unary operator, which only has its first child populated.

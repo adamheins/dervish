@@ -9,8 +9,6 @@ import org.junit.Test;
 
 public class Tests {
     
-    // TODO need to test error conditions
-
     
     @Test
     public void testBuildOneNumber() {

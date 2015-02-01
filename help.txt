@@ -1,0 +1,18 @@
+use <variable(s)>               Declare what variables are being used.
+forget <variable(s)>            Remove variables from 'use' list.
+
+set <variable> <expression>     Set a variable equal to a function.
+clear <variable(s)>             Clear a variable's value.
+show <variable(s)>              Lists all variables and their values, if they
+                                have one.
+
+sub <expression> <variable(s)>  Substitutes specified variables and evaluates
+                                the expression.
+eval <expression>               Evaluates the expression without substitution,
+                                which is the same as calling 'sub' with no
+                                variable arguments.
+diff <expression> <variable>    Calculates the derivative of the expression
+                                with respect to given variable.
+
+help                            Lists descriptions of all commands.
+exit                            Exit the program.

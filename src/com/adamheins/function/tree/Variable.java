@@ -30,4 +30,10 @@ public class Variable extends Function {
         // If this variable is not defined in the map, just return itself.
         return this;
     }
+    
+    
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

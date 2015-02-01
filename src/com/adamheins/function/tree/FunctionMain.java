@@ -6,13 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/*
- * Re-add polymorphic toString() behaviour.
- * Watch out for precision errors - could allow users to change default precision of 20 to something else
- *     prec <precision> command
- * Consider splitting CommandParser with FunctionMain state
- */
-
 
 /**
  * Entry point for the interactive program.

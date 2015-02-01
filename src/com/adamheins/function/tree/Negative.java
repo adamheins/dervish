@@ -39,7 +39,7 @@ public class Negative extends Function {
     
     @Override
     public String toString() {
-        return "-(" + getFirstChild().toString() + ")"; //TODO wouldn't be ideal for numbers
+        return "-(" + getFirstChild().toString() + ")";
     }
 
 }

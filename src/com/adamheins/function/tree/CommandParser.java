@@ -438,7 +438,7 @@ public class CommandParser {
             }
         } else {
             for (String var : varList) {
-                if (!tokens.contains(var) && !varMap.containsKey(var))
+                if (tokens.contains(var) && !varMap.containsKey(var))
                     response += var + "\n";
             }
         }
@@ -507,6 +507,8 @@ public class CommandParser {
             return show(tokens);
         } else if (tokens.get(0).equals("help")) {
             return HELP_TEXT;
+        } else if (tokens.get(0).equals("prec")) {
+            
         }
         
         return "Unknown command.";

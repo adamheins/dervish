@@ -6,8 +6,8 @@ import org.apfloat.Apfloat;
 
 public class Number extends Function {
     
-    public static final Number ZERO = new Number("0");
-    public static final Number ONE = new Number("1");
+    public static final Number ZERO = new Number(Apfloat.ZERO);
+    public static final Number ONE = new Number(Apfloat.ONE);
    
 
     public Number(String value) {
