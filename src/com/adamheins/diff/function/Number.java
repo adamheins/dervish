@@ -1,4 +1,4 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.function;
 
 import java.util.Map;
 

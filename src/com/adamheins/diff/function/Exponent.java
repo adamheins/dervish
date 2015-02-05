@@ -1,4 +1,4 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.function;
 
 import java.util.Map;
 
@@ -54,27 +54,44 @@ public class Exponent extends Function {
         Function firstDer = first.differentiateInternal(var);
         Function secondDer = second.differentiateInternal(var);
         
-        FunctionBuilder fb = new FunctionBuilder();
-        fb.add(first, 0);
-        fb.add(new Exponent(), 0);
-        fb.add(second, 0);
-        fb.add(new Multiply(), 0);
-        fb.add(secondDer, 0);
-        fb.add(new Multiply(), 0);
-        fb.add(new Ln(), 0);
-        fb.add(first, 0);
-        fb.add(new Plus(), 0);
-        fb.add(first, 0);
-        fb.add(new Exponent(), 0);
-        fb.add(second, 1);
-        fb.add(new Minus(), 1);
-        fb.add(new Number("1"), 1);
-        fb.add(new Multiply(), 0);
-        fb.add(second, 0);
-        fb.add(new Multiply(), 0);
-        fb.add(firstDer, 0);
+        Function exp1 = new Exponent();
+        exp1.setFirstChild(first);
+        exp1.setSecondChild(second);
         
-        return fb.getFunction();
+        Function ln = new Ln();
+        ln.setFirstChild(first);
+        
+        Function mult1 = new Multiply();
+        mult1.setFirstChild(secondDer);
+        mult1.setSecondChild(ln);
+        
+        Function mult2 = new Multiply();
+        mult2.setFirstChild(exp1);
+        mult2.setSecondChild(mult1);
+        
+        
+        Function minus = new Minus();
+        minus.setFirstChild(second);
+        minus.setSecondChild(Number.ONE);
+        
+        Function exp2 = new Exponent();
+        exp2.setFirstChild(first);
+        exp2.setSecondChild(minus);
+        
+        Function mult3 = new Multiply();
+        mult3.setFirstChild(second);
+        mult3.setSecondChild(firstDer);
+        
+        Function mult4 = new Multiply();
+        mult4.setFirstChild(exp2);
+        mult4.setSecondChild(mult3);
+        
+        
+        Function derivative = new Plus();
+        derivative.setFirstChild(mult2);
+        derivative.setSecondChild(mult4);
+        
+        return derivative;
     }
 
 }

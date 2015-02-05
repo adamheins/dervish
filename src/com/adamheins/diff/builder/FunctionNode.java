@@ -1,10 +1,11 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.builder;
 
-import com.adamheins.function.tree.Function.Associativity;
+import com.adamheins.diff.function.Function;
+import com.adamheins.diff.function.Function.Associativity;
 
-public class FunctionNode {
+class FunctionNode {
 
-    Function function;
+    private Function function;
     private FunctionNode parent;
     private int bracketDepth;
 
@@ -80,7 +81,7 @@ public class FunctionNode {
         if (getBracketDepth() > other.getBracketDepth())
             return 1;
         if (getBracketDepth() < other.getBracketDepth())
-            return -1;       
+            return -1;
         return (getFunction().getPrecedence().compareTo(other.getFunction().getPrecedence()));
     }
     

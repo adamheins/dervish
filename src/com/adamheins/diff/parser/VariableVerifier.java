@@ -1,9 +1,11 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.parser;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.adamheins.diff.function.Function;
 
 /**
  * Verifies if a variable and its assigned value can be added to the map of variables without

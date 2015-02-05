@@ -1,4 +1,4 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.function;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class Divide extends Function {
         if (second.equals(Number.ONE)) {
             return first;
         } else if (second.equals(Number.ZERO)) {
-            throw new RuntimeException("Division by zero."); //TODO maybe do something better here.
+            throw new EvaluationException("Division by zero.");
         } else if (first.equals(Number.ZERO)) {
             return Number.ZERO;
         }
@@ -42,21 +42,26 @@ public class Divide extends Function {
     @Override
     public Function differentiateInternal(String var) {
         
-        FunctionBuilder fb = new FunctionBuilder();
-        fb.add(getFirstChild().differentiateInternal(var), 1);
-        fb.add(new Multiply(), 1);
-        fb.add(getSecondChild(), 1);
-        fb.add(new Minus(), 1);
-        fb.add(getFirstChild(), 1);
-        fb.add(new Multiply(), 1);
-        fb.add(getSecondChild().differentiateInternal(var), 1);
-        fb.add(new Divide(), 0);
-        fb.add(getSecondChild(), 0);
-        fb.add(new Exponent(), 0);
-        fb.add(new Number("2"), 0);
+        Function mult1 = new Multiply();
+        mult1.setFirstChild(getFirstChild().differentiateInternal(var));
+        mult1.setSecondChild(getSecondChild());
         
-        Function derivative = fb.getFunction();
-
+        Function mult2 = new Multiply();
+        mult2.setFirstChild(getFirstChild());
+        mult2.setSecondChild(getSecondChild().differentiateInternal(var));
+        
+        Function mult3 = new Multiply();
+        mult3.setFirstChild(getSecondChild());
+        mult3.setSecondChild(getSecondChild());
+        
+        Function minus = new Minus();
+        minus.setFirstChild(mult1);
+        minus.setSecondChild(mult2);
+        
+        Function derivative = new Divide();
+        derivative.setFirstChild(minus);
+        derivative.setSecondChild(mult3);
+        
         return derivative;
     }
 

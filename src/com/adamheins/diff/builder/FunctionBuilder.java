@@ -1,4 +1,6 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.builder;
+
+import com.adamheins.diff.function.Function;
 
 
 /**
@@ -10,13 +12,13 @@ package com.adamheins.function.tree;
 public class FunctionBuilder {
  
     // Current node in the tree, which is the one that was most recently added.
-    FunctionNode current;
+    private FunctionNode current;
     
     
     /**
      * Constructor.
      */
-    FunctionBuilder() {
+    public FunctionBuilder() {
         current = null;
     }
     
@@ -27,8 +29,7 @@ public class FunctionBuilder {
      * @param function The function to be added to the tree.
      * @param bracketDepth The number of brackets in which the function is nested.
      */
-    void add(Function function, int bracketDepth) {
-        
+    public void add(Function function, int bracketDepth) {
         FunctionNode node = new FunctionNode(function, bracketDepth);
                 
         if (current!= null)
@@ -60,7 +61,7 @@ public class FunctionBuilder {
      * 
      * @return The root function.
      */
-    Function getFunction() {
+    public Function getFunction() {
         return getRoot().evaluate();
     }
 }

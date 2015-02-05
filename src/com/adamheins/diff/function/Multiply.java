@@ -1,4 +1,4 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.function;
 
 import java.util.Map;
 
@@ -45,16 +45,17 @@ public class Multiply extends Function {
     @Override
     public Function differentiateInternal(String var) {
         
-        FunctionBuilder fb = new FunctionBuilder();
-        fb.add(getFirstChild().differentiateInternal(var), 0);
-        fb.add(new Multiply(), 0);
-        fb.add(getSecondChild(), 0);
-        fb.add(new Plus(), 0);
-        fb.add(getFirstChild(), 0);
-        fb.add(new Multiply(), 0);
-        fb.add(getSecondChild().differentiateInternal(var), 0);
+        Function mult1 = new Multiply();
+        mult1.setFirstChild(getFirstChild().differentiateInternal(var));
+        mult1.setSecondChild(getSecondChild());
         
-        Function derivative = fb.getFunction();
+        Function mult2 = new Multiply();
+        mult2.setFirstChild(getFirstChild());
+        mult2.setSecondChild(getSecondChild().differentiateInternal(var));
+        
+        Function derivative = new Plus();
+        derivative.setFirstChild(mult1);
+        derivative.setSecondChild(mult2);
         
         return derivative;
     }

@@ -1,5 +1,6 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.function;
 
+import java.math.RoundingMode;
 import java.util.Map;
 
 import org.apfloat.Apfloat;
@@ -12,7 +13,7 @@ public class Log extends Function {
     
     public Log(String base) {
         super("log<" + base + ">", Precedence.EXPONENTIATION, Associativity.RIGHT, false);
-        this.base = new Apfloat(base);
+        this.base = new Apfloat(base, PRECISION + 1);
     }
     
     // Internal use.
@@ -25,7 +26,7 @@ public class Log extends Function {
     // Internal use.
     protected Log(String base, String value) {
         super(value, Precedence.EXPONENTIATION, Associativity.RIGHT, false);
-        this.base = new Apfloat(base);
+        this.base = new Apfloat(base, PRECISION + 1);
     }
 
 
@@ -35,8 +36,10 @@ public class Log extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            Apfloat value = (Apfloat)child.getValue();
-            return new Number(ApfloatMath.log(value, base));
+
+            // Hacky way of dealing with precision problems.
+            Apfloat value = ((Apfloat)child.getValue()).precision(PRECISION + 1);
+            return new Number(ApfloatMath.round(ApfloatMath.log(value, base), PRECISION, RoundingMode.HALF_UP));
         }
         
         Function me = new Log(base);
@@ -50,13 +53,12 @@ public class Log extends Function {
         
         Apfloat coefficient = Apfloat.ONE.divide(ApfloatMath.log(base));
         
-        FunctionBuilder fb = new FunctionBuilder();
-        fb.add(new Number(coefficient.toString(PRETTY)), 0);
-        fb.add(new Multiply(), 0);
-        fb.add(new Ln(), 0);
-        fb.add(getFirstChild().evaluate(), 0);
+        Function ln = new Ln();
+        ln.setFirstChild(getFirstChild());
         
-        Function derivative = fb.getFunction().differentiateInternal(var);
+        Function derivative = new Multiply();
+        derivative.setFirstChild(new Number(coefficient.toString(PRETTY)));
+        derivative.setSecondChild(ln);
         
         return derivative;
     }

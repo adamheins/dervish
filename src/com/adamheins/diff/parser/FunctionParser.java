@@ -1,24 +1,18 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.parser;
 
 import java.util.List;
 
-
-class ParsingException extends Exception {
-    
-    private static final long serialVersionUID = 5377397872629670761L;
-
-    ParsingException(String msg) {
-        super(msg);
-    }
-}
+import com.adamheins.diff.builder.FunctionBuilder;
+import com.adamheins.diff.function.*;
+import com.adamheins.diff.function.Number;
 
 
 public class FunctionParser {
     
-    
     List<String> varList;
     int bracketCounter;
-    
+
+
     public FunctionParser(List<String> varList) {
         bracketCounter = 0;
         this.varList = varList;
@@ -28,78 +22,82 @@ public class FunctionParser {
     public Function parse(String functionString) throws ParsingException {
         
         FunctionBuilder fb = new FunctionBuilder();
+        Function func = null;
         
         for (int index = 0; index < functionString.length(); ) {
             if (Character.isWhitespace(functionString.charAt(index))) {
                 index++;
+                continue;
             } else if (functionString.charAt(index) == '+') {
-                fb.add(new Plus(), bracketCounter);
+                func = new Plus();
                 index++;
             } else if (functionString.charAt(index) == '-') {
                 
-                if (fb.current == null) {
-                    fb.add(new Negative(), bracketCounter);
+                if (index == 0) {
+                    func = new Negative();
                 } else {
-                    Function prev = fb.current.function;
-                    if (prev instanceof Number || prev instanceof Variable) {
-                        fb.add(new Minus(), bracketCounter);
+                    if (func instanceof Number || func instanceof Variable) {
+                        func = new Minus();
                     } else {
-                        fb.add(new Negative(), bracketCounter);
+                        func = new Negative();
                     }
                 }
                 index++;
             } else if (functionString.charAt(index) == '*') {
-                fb.add(new Multiply(), bracketCounter);
+                func = new Multiply();
                 index++;
             } else if (functionString.charAt(index) == '/') {
-                fb.add(new Divide(), bracketCounter);
+                func = new Divide();
                 index++;
             } else if (functionString.charAt(index) == '^') {
-                fb.add(new Exponent(), bracketCounter);
+                func = new Exponent();
                 index++;
             } else if (substringAt(functionString, "sin", index)) {
-                fb.add(new Sin(), bracketCounter);
+                func = new Sin();
                 index += 3;
             } else if (substringAt(functionString, "cos", index)) {
-                fb.add(new Cos(), bracketCounter);
+                func = new Cos();
                 index += 3;
             } else if (substringAt(functionString, "tan", index)) {
-                fb.add(new Tan(), bracketCounter);
+                func = new Tan();
                 index += 3;
             } else if (substringAt(functionString, "ln", index)) {
-                fb.add(new Ln(), bracketCounter);
+                func = new Ln();
                 index += 2;
             } else if (substringAt(functionString, "log", index)) {
-                fb.add(new Log("10"), bracketCounter);
+                func = new Log("10");
                 index += 3;
             } else if (functionString.charAt(index) == ')') {
                 bracketCounter--;
-                index++;         
+                index++;
+                continue;
             } else if (functionString.charAt(index) == '(') {
                 bracketCounter++;
                 index++;
+                continue;
             } else if (isNumber(functionString.charAt(index))) {
                 int start = index;
                 index++;
                 while (index < functionString.length() && isNumber(functionString.charAt(index)))
                     index++;
-                fb.add(new Number(functionString.substring(start, index)), bracketCounter);
+                func = new Number(functionString.substring(start, index));
             } else {
                 boolean flag = false;
                 for (String var : varList) {
                     if (substringAt(functionString, var, index)) {
-                        fb.add(new Variable(functionString.substring(index, index + var.length())), bracketCounter);
+                        func = new Variable(functionString.substring(index, index + var.length()));
                         index += var.length();
                         flag = true;
                         break;
                     }
                 }
                 if (!flag) {
-                    throw new ParsingException("Unrecoginized character while parsing.");
+                    throw new ParsingException("Unrecognized character <" + functionString.charAt(index) + "> while parsing.");
                 }
             }
+
+            fb.add(func, bracketCounter);
         }
-        
         return fb.getFunction();
     }
     

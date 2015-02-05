@@ -1,4 +1,4 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.parser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,86 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-/**
- * Thrown when a command is missing arguments.
- */
-class MissingArgumentException extends Exception {
-    
-    private static final long serialVersionUID = -319843297438731309L;
-
-    MissingArgumentException(String msg) {
-        super(msg);
-    }
-}
-
-
-/**
- * Thrown when the user attempts to use a variable that is not being used by the
- * program.
- */
-class UnknownVariableException extends Exception {
-    
-    private static final long serialVersionUID = 7076065329659998594L;
-
-    UnknownVariableException(String msg) {
-        super(msg);
-    }
-}
-
-
-/**
- * Thrown when the user attempts use the value of a variable when that variable
- * does not have one.
- */
-class UndefinedVariableException extends Exception {
-
-    private static final long serialVersionUID = 1070084253653017219L;
-
-    UndefinedVariableException(String msg) {
-        super(msg);
-    }
-}
-
-
-/**
- * Thrown when setting a variable to a particular value would cause a cycle in 
- * defined variables.
- */
-class CyclicVariableException extends Exception {
-
-    private static final long serialVersionUID = -2720890315075878056L;
-
-    CyclicVariableException(String msg) {
-        super(msg);
-    }
-}
-
-
-/**
- * Thrown when the user attempts to manipulate the LAST variable.
- */
-class LastFunctionException extends Exception {
-    
-    private static final long serialVersionUID = -1728676203868117007L;
-
-    LastFunctionException(String msg) {
-        super(msg);
-    }
-}
-
-
-/**
- * Thrown when a variable uses a reserved keyword as a name.
- */
-class IllegalVariableNameException extends Exception {
-    
-    private static final long serialVersionUID = -988684259468261864L;
-
-    IllegalVariableNameException(String msg) {
-        super(msg);
-    }
-}
+import com.adamheins.diff.function.Function;
 
 
 /**
@@ -115,7 +36,7 @@ public class CommandParser {
     private String HELP_TEXT;
     
     
-    CommandParser() {
+    public CommandParser() {
         varMap = new HashMap<String, Function>();
         varList = new ArrayList<String>();
         varList.add(LAST);
@@ -136,15 +57,12 @@ public class CommandParser {
      * 
      * @return A string representing the evaluated function.
      * 
-     * @throws MissingArgumentException If no variables are listed.
-     * @throws IllegalVariableNameException If keywords are used as variable 
-     *         names.
+     * @throws ParsingException 
      */
-    private void use(List<String> tokens) throws MissingArgumentException, 
-            IllegalVariableNameException {
+    private void use(List<String> tokens) throws ParsingException {
         
         if (tokens.size() < 2)
-            throw new MissingArgumentException("Missing argument: use <variables(s)>.");
+            throw new ParsingException("Missing argument: use <variables(s)>.");
         
         tokens.remove(0);
         
@@ -164,7 +82,7 @@ public class CommandParser {
             for (String var : illegalVariables)
                 msg += "'" + var + "',";
             msg += "are reserved keywords and cannot be used as variables.";
-            throw new IllegalVariableNameException(msg);
+            throw new ParsingException(msg);
         }
     }
     
@@ -176,11 +94,11 @@ public class CommandParser {
      * 
      * @return A string representing the evaluated function.
      * 
-     * @throws MissingArgumentException
+     * @throws ParsingException 
      */
-    private void forget(List<String> tokens) throws MissingArgumentException {
+    private void forget(List<String> tokens) throws ParsingException {
         if (tokens.size() < 2)
-            throw new MissingArgumentException("Missing argument: use <variables(s)>.");
+            throw new ParsingException("Missing argument: use <variables(s)>.");
         
         // Remove 'forget' token.
         tokens.remove(0);
@@ -211,16 +129,12 @@ public class CommandParser {
      * @return The evaluated function with all specified variables substituted 
      *         into it.
      * 
-     * @throws MissingArgumentException If no function is given.
-     * @throws UndefinedVariableException If the user attempts to sub in a 
-     *         variable that has no value.
-     * @throws ParsingException If the function fails to parse.
+     * @throws ParsingException
      */
-    private String sub(List<String> tokens) throws MissingArgumentException, 
-            UndefinedVariableException, ParsingException {
+    private String sub(List<String> tokens) throws ParsingException {
         
         if (tokens.size() == 1)
-            throw new MissingArgumentException("Missing argument: sub <function>.");
+            throw new ParsingException("Missing argument: sub <function>.");
         
         // Remove the 'sub' token.
         tokens.remove(0);
@@ -243,7 +157,7 @@ public class CommandParser {
         Map<String, Function> varSubMap = new HashMap<String, Function>();
         for (int i = 0; i < tokens.size(); ++i) {
             if (!varMap.containsKey(tokens.get(i)))
-                throw new UndefinedVariableException("Variable '" + tokens.get(i) + "' has no value.");
+                throw new ParsingException("Variable '" + tokens.get(i) + "' has no value.");
             varSubMap.put(tokens.get(i), varMap.get(tokens.get(i)));
         }
         
@@ -262,13 +176,12 @@ public class CommandParser {
      * 
      * @return A string representing the evaluated function.
      * 
-     * @throws MissingArgumentException If no function is given.
-     * @throws ParsingException If the given function fails to parse.
+     * @throws ParsingException
      */
-    private String eval(List<String> tokens) throws MissingArgumentException, ParsingException {
+    private String eval(List<String> tokens) throws ParsingException {
         
         if (tokens.size() == 1)
-            throw new MissingArgumentException("Missing argument: eval <function>.");
+            throw new ParsingException("Missing argument: eval <function>.");
         
         String funcStr = tokens.get(1);
         
@@ -294,13 +207,12 @@ public class CommandParser {
      * 
      * @return A string representing the derivative of the function.
      * 
-     * @throws MissingArgumentException If the function or variable are missing.
-     * @throws ParsingException If the given function fails to parse.
+     * @throws ParsingException
      */
-    private String diff(List<String> tokens) throws MissingArgumentException, ParsingException {
+    private String diff(List<String> tokens) throws ParsingException {
         
         if (tokens.size() < 3)
-            throw new MissingArgumentException("Missing argument(s): diff <function> <variable>.");
+            throw new ParsingException("Missing argument(s): diff <function> <variable>.");
         
         String funcStr = tokens.get(1);
         
@@ -327,26 +239,15 @@ public class CommandParser {
      * 
      * @param tokens List of tokens from the command string.
      * 
-     * @throws MissingArgumentException If the variable or assigned function is missing.
-     * @throws UnknownVariableException If the user attempts to assign a variable that is not being
-     *      being used by the program.
-     * @throws ParsingException If the assigned function fails to parse.
-     * @throws CyclicVariableException If the variable assignment would cause a cycle in the
-     *      variable definitions.
-     * @throws UndefinedVariableException If the user has also called the 'sub' command in the same
-     *         line and has attempted to sub in variable with no value.
-     * @throws LastFunctionException If the user attempted to clear the LAST variable.
-     * @throws IllegalVariableNameException If the variable name is an illegal keyword.
+     * @throws ParsingException
      */
-    private void set(List<String> tokens) throws MissingArgumentException, 
-            UnknownVariableException, ParsingException, CyclicVariableException, 
-            UndefinedVariableException, LastFunctionException, IllegalVariableNameException {
+    private void set(List<String> tokens) throws ParsingException {
         
         if (tokens.size() < 3)
-            throw new MissingArgumentException("Missing argument(s): set <variable> <function>.");
+            throw new ParsingException("Missing argument(s): set <variable> <function>.");
         
         if (!varList.contains(tokens.get(1)))
-            throw new UnknownVariableException("Unknown variable! Declare variables with 'use <variable(s)>' first.");
+            throw new ParsingException("Unknown variable! Declare variables with 'use <variable(s)>' first.");
         
         String var = tokens.get(1);
         String funcStr = tokens.get(2);
@@ -367,7 +268,7 @@ public class CommandParser {
         // Check for potentional cycle in the variable map.
         VariableVerifier verifier = new VariableVerifier(varMap);
         if (!verifier.verify(var, varValue))
-            throw new CyclicVariableException("Variable definition contains cycle.");
+            throw new ParsingException("Variable definition contains cycle.");
         
         varMap.put(var, varValue);
     }
@@ -379,14 +280,12 @@ public class CommandParser {
      * 
      * @param tokens List of tokens from the command string.
      * 
-     * @throws MissingArgumentException If no variables are specified to be cleared.
-     * @throws LastFunctionException If the user tries to clear the value of the LAST variable.
+     * @throws ParsingException 
      */
-    private void clear(List<String> tokens) throws MissingArgumentException, 
-            LastFunctionException {
+    private void clear(List<String> tokens) throws ParsingException {
         
         if (tokens.size() < 2)
-            throw new MissingArgumentException("Missing argument: clear <variables(s)>.");
+            throw new ParsingException("Missing argument: clear <variables(s)>.");
         
         // Remove the 'clear' token so we can iterate over all tokens later.
         tokens.remove(0);
@@ -404,7 +303,7 @@ public class CommandParser {
         // Remove all specified variables from the list.
         } else {
             if (tokens.contains(LAST))
-                throw new LastFunctionException("Cannot clear LAST variable ($).");
+                throw new ParsingException("Cannot clear LAST variable ($).");
             for (String token : tokens) {
                 varMap.remove(token);
             }
@@ -470,20 +369,9 @@ public class CommandParser {
      * 
      * @return The response to the command.
      * 
-     * @throws MissingArgumentException If arguments are missing from the command.
-     * @throws UndefinedVariableException If a variable has no value where one is expected.
-     * @throws ParsingException If a function fails to parse.
-     * @throws UnknownVariableException If the user attempts to use a variable that is not in list
-     *         of variables being used by the program.
-     * @throws CyclicVariableException If a variable assignment would cause a cyclic relationship
-     *         between variable definitions.
-     * @throws LastFunctionException If the user attempts to modify or delete the LAST variable.
-     * @throws IllegalVariableNameException If the user attempts to name a variable with a
-     *         reserved word.
+     * @throws ParsingException
      */
-    private String parseCommand(List<String> tokens) throws MissingArgumentException, 
-            UndefinedVariableException, ParsingException, UnknownVariableException, 
-            CyclicVariableException, LastFunctionException, IllegalVariableNameException {
+    private String parseCommand(List<String> tokens) throws ParsingException {
         
         if (tokens.get(0).equals("use")) {
             use(tokens);
@@ -507,8 +395,6 @@ public class CommandParser {
             return show(tokens);
         } else if (tokens.get(0).equals("help")) {
             return HELP_TEXT;
-        } else if (tokens.get(0).equals("prec")) {
-            
         }
         
         return "Unknown command.";
@@ -522,20 +408,9 @@ public class CommandParser {
      * 
      * @return A response to the command.
      * 
-     * @throws MissingArgumentException If arguments are missing from the command.
-     * @throws UndefinedVariableException If a variable has no value where one is expected.
-     * @throws ParsingException If a function fails to parse.
-     * @throws UnknownVariableException If the user attempts to use a variable that is not in list
-     *         of variables being used by the program.
-     * @throws CyclicVariableException If a variable assignment would cause a cyclic relationship
-     *         between variable definitions.
-     * @throws LastFunctionException If the user attempts to modify or delete the LAST variable.
-     * @throws IllegalVariableNameException If the user attempts to name a variable with a
-     *         reserved word.
+     * @throws ParsingException If the commands do not parse correctly.
      */
-    public String parse(String command) throws MissingArgumentException, UndefinedVariableException,
-            ParsingException, UnknownVariableException, CyclicVariableException, 
-            LastFunctionException, IllegalVariableNameException {
+    public String parse(String command) throws ParsingException {
         
         List<String> tokens = stringArrayToList(command.toLowerCase().split(" "));
         

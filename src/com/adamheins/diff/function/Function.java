@@ -1,4 +1,4 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.function;
 
 import java.util.ArrayList;
 import java.util.Deque;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /** Parent for all types of math nodes. */
-abstract class Function {
+public abstract class Function {
     
     // Precision of the results of operations that generate less precise results than the operands.
     // One example is division, which can take infinite-precision integers and produce finite-
@@ -129,7 +129,7 @@ abstract class Function {
      * 
      * @return The first child Node.
      */
-    protected Function getFirstChild() {
+    public Function getFirstChild() {
         return first;
     }
     
@@ -139,7 +139,7 @@ abstract class Function {
      * 
      * @return The second child Function.
      */
-    protected Function getSecondChild() {
+    public Function getSecondChild() {
         return second;
     }
     
@@ -149,7 +149,7 @@ abstract class Function {
      * 
      * @return The mathematical precedence of this Function.
      */
-    Precedence getPrecedence() {
+    public Precedence getPrecedence() {
         return precedence;
     }
     
@@ -159,7 +159,7 @@ abstract class Function {
      * 
      * @return The associativity of this Function.
      */
-    Associativity getAssociativity() {
+    public Associativity getAssociativity() {
         return associativity;
     }
     
@@ -169,7 +169,7 @@ abstract class Function {
      * 
      * @param child The Function to add as the first child of this Function.
      */
-    void setFirstChild(Function child) {
+    public void setFirstChild(Function child) {
         first = child;
     }
     
@@ -179,7 +179,7 @@ abstract class Function {
      * 
      * @param child The Function to add as the second child of this Function.
      */
-    void setSecondChild(Function child) {
+    public void setSecondChild(Function child) {
         second = child;
     }
     
@@ -265,7 +265,7 @@ abstract class Function {
      * those on the right. NUMBER should always come last because for the purposes of this program,
      * numbers have infinite precedence.
      */
-    protected enum Precedence {
+    public enum Precedence {
         ADDITION, MULTIPLICATION, EXPONENTIATION, TRIG, NUMBER; 
     }
     
@@ -273,7 +273,7 @@ abstract class Function {
     /**
      * The associativity of a Function.
      */
-    protected enum Associativity {
+    public enum Associativity {
         LEFT, RIGHT;
     }
 }

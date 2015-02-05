@@ -1,4 +1,4 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -6,13 +6,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.adamheins.diff.parser.CommandParser;
+import com.adamheins.diff.parser.ParsingException;
+
 
 /**
  * Entry point for the interactive program.
  * 
  * @author Adam
  */
-public class FunctionMain {
+public class Diff {
         
     public static void main(String args[]) {
         
@@ -48,21 +51,10 @@ public class FunctionMain {
                     String result = parser.parse(input);
                     if (!result.equals(""))
                         System.out.println(result);
-                } catch (MissingArgumentException e) {
-                    System.out.println(e.getMessage());
-                } catch (UndefinedVariableException e) {
-                    System.out.println(e.getMessage());
                 } catch (ParsingException e) {
                     System.out.println(e.getMessage());
-                } catch (UnknownVariableException e) {
-                    System.out.println(e.getMessage());
-                } catch (CyclicVariableException e) {
-                    System.out.println(e.getMessage());
-                } catch (LastFunctionException e) {
-                    System.out.println(e.getMessage());
-                } catch (IllegalVariableNameException e) {
-                    System.out.println(e.getMessage());
                 }
+
                 if (!fromFile)
                     System.out.print("> ");
             }

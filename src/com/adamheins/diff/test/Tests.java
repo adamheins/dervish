@@ -1,11 +1,14 @@
-package com.adamheins.function.tree;
+package com.adamheins.diff.test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.adamheins.diff.builder.*;
+import com.adamheins.diff.function.*;
+import com.adamheins.diff.function.Number;
+import com.adamheins.diff.parser.*;
 
 public class Tests {
     
@@ -479,11 +482,55 @@ public class Tests {
     
     
     @Test
+    public void testParseBracketedNumber() throws ParsingException {
+        String math = "(-5.6)";
+        FunctionParser fp = new FunctionParser(null);
+        Function actual = fp.parse(math);
+        Function expected = new Number("-5.6");
+
+        Assert.assertEquals(expected, actual);
+    }
+    
+    
+    @Test
     public void testParseBrackets() throws ParsingException {
         String math = "2*(3+4)";
         FunctionParser fp = new FunctionParser(null);
         Function actual = fp.parse(math);
         Function expected = new Number("14");
+
+        Assert.assertEquals(expected, actual);
+    }
+    
+    
+    @Test
+    public void testParseComplexBrackets() throws ParsingException {
+        String math = "(2*(6-3))^2";
+        FunctionParser fp = new FunctionParser(null);
+        Function actual = fp.parse(math);
+        Function expected = new Number("36");
+
+        Assert.assertEquals(expected, actual);
+    }
+    
+    
+    @Test
+    public void testParseComplexBrackets2() throws ParsingException {
+        String math = "(2+8)/4-0.5*2";
+        FunctionParser fp = new FunctionParser(null);
+        Function actual = fp.parse(math);
+        Function expected = new Number("1.5");
+
+        Assert.assertEquals(expected, actual);
+    }
+    
+    
+    @Test
+    public void testParseComplexBrackets3() throws ParsingException {
+        String math = "(log(500+500)*2/3)^3";
+        FunctionParser fp = new FunctionParser(null);
+        Function actual = fp.parse(math);
+        Function expected = new Number("8");
 
         Assert.assertEquals(expected, actual);
     }
@@ -638,10 +685,10 @@ public class Tests {
         CommandParser cp = new CommandParser();
         String response = cp.parse(input);
         
-        List<String> varList = cp.varList;
-        Assert.assertTrue(varList.contains("x"));
-        Assert.assertTrue(varList.contains("y"));
-        Assert.assertTrue(varList.contains("z"));
+        String vars = cp.parse("show all");
+        Assert.assertTrue(vars.contains("x"));
+        Assert.assertTrue(vars.contains("y"));
+        Assert.assertTrue(vars.contains("z"));
         
         Assert.assertEquals("", response);
     }
@@ -653,10 +700,10 @@ public class Tests {
         CommandParser cp = new CommandParser();
         String response = cp.parse(input);
         
-        List<String> varList = cp.varList;
-        Assert.assertTrue(varList.contains("x"));
-        Assert.assertTrue(varList.contains("var"));
-        Assert.assertTrue(varList.contains("variable"));
+        String vars = cp.parse("show all");
+        Assert.assertTrue(vars.contains("x"));
+        Assert.assertTrue(vars.contains("var"));
+        Assert.assertTrue(vars.contains("variable"));
         
         Assert.assertEquals("", response);
     }
@@ -667,11 +714,11 @@ public class Tests {
         CommandParser cp = new CommandParser();
         cp.parse("use x y z");
         cp.parse("forget x y");
-        
-        List<String> varList = cp.varList;
-        Assert.assertFalse(varList.contains("x"));
-        Assert.assertFalse(varList.contains("y"));
-        Assert.assertTrue(varList.contains("z"));
+
+        String vars = cp.parse("show all");
+        Assert.assertFalse(vars.contains("x"));
+        Assert.assertFalse(vars.contains("y"));
+        Assert.assertTrue(vars.contains("z"));
     }
 
 
@@ -681,10 +728,10 @@ public class Tests {
         cp.parse("use x y z");
         cp.parse("forget all");
 
-        List<String> varList = cp.varList;
-        Assert.assertFalse(varList.contains("x"));
-        Assert.assertFalse(varList.contains("y"));
-        Assert.assertFalse(varList.contains("z"));
+        String vars = cp.parse("show all");
+        Assert.assertFalse(vars.contains("x"));
+        Assert.assertFalse(vars.contains("y"));
+        Assert.assertFalse(vars.contains("z"));
     }
 
     
@@ -698,11 +745,16 @@ public class Tests {
         fb.add(new Variable("y"), 0);
         fb.add(new Plus(), 0);
         fb.add(new Number("9.73"), 0);
-        Function actual = fb.getFunction();
+        Function expected = fb.getFunction();
         
-        Map<String, Function> varMap = cp.varMap;
+        List<String> varList = new ArrayList<String>();
+        varList.add("x");
+        varList.add("y");
         
-        Assert.assertEquals(varMap.get("x"), actual);
+        FunctionParser fp = new FunctionParser(varList);
+        Function actual = fp.parse(cp.parse("show x").split(" ")[2]);
+        
+        Assert.assertEquals(expected, actual);
     }
 
 
@@ -716,11 +768,16 @@ public class Tests {
         fb.add(new Variable("y"), 0);
         fb.add(new Multiply(), 0);
         fb.add(new Number("2"), 0);
-        Function actual = fb.getFunction();
+        Function expected = fb.getFunction();
         
-        Map<String, Function> varMap = cp.varMap;
+        List<String> varList = new ArrayList<String>();
+        varList.add("x");
+        varList.add("y");
         
-        Assert.assertEquals(varMap.get("x"), actual);
+        FunctionParser fp = new FunctionParser(varList);
+        Function actual = fp.parse(cp.parse("show x").split(" ")[2]);
+        
+        Assert.assertEquals(expected, actual);
     }
     
     
@@ -731,12 +788,11 @@ public class Tests {
         cp.parse("set x y+9.73");
         cp.parse("set y 4");
         cp.parse("clear x");
+        String actual = cp.parse("show y");
         
-        Function actual = new Number("4");
+        String expected = "y = 4";
         
-        Map<String, Function> varMap = cp.varMap;
-        
-        Assert.assertEquals(varMap.get("y"), actual);
+        Assert.assertEquals(expected, actual);
     }
 
 
@@ -748,9 +804,9 @@ public class Tests {
         cp.parse("set y 4");
         cp.parse("clear all");
         
-        Map<String, Function> varMap = cp.varMap;
+        String response = cp.parse("show all");
         
-        Assert.assertTrue(varMap.isEmpty());
+        Assert.assertFalse(response.contains("="));
     }
     
     
@@ -820,8 +876,8 @@ public class Tests {
     @Test
     public void testLASTVarUndefined() throws Exception {
         CommandParser cp = new CommandParser();
-        List<String> varList = cp.varList;
-        Assert.assertTrue(varList.contains("$"));
+        String vars = cp.parse("show all");
+        Assert.assertTrue(vars.contains("$"));
     }
     
     
