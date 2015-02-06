@@ -9,12 +9,14 @@ import java.util.Map;
 /** Parent for all types of math nodes. */
 public abstract class Function {
     
-    // Precision of the results of operations that generate less precise results than the operands.
-    // One example is division, which can take infinite-precision integers and produce finite-
-    // precision fractional numbers.
+    // Precision of the results of operations that generate less precise results
+    // than the operands. One example is division, which can take
+    // infinite-precision integers and produce finite-precision fractional
+    // numbers.
     protected static final int PRECISION = 20;
     
-    // True if the Apfloat values used internally are formatted to be 'pretty', false otherwise.
+    // True if the Apfloat values used internally are formatted to be 'pretty',
+    // false otherwise.
     protected final static boolean PRETTY = true;
     
     protected final Object value;
@@ -48,12 +50,13 @@ public abstract class Function {
     
     
     /**
-     * Evaluates the function, substituting values for all variables in the passed map. The function
-     * will be reduced to a simpler function. If no variables are present or all variables have
-     * a number substituted, it will be reduced to a number.
+     * Evaluates the function, substituting values for all variables in the
+     * passed map. The function will be reduced to a simpler function. If no
+     * variables are present or all variables have a number substituted, it will
+     * be reduced to a number.
      * 
-     * @param varMap A map of variable names and the Functions that should be substituted into
-     *               them.
+     * @param varMap A map of variable names and the Functions that should be
+     *         substituted into them.
      * 
      * @return The evaluated Function.
      */
@@ -71,8 +74,8 @@ public abstract class Function {
     
     
     /**
-     * Calculates the derivative of the subtree that has this Node at its root. Used internally
-     * within the class.
+     * Calculates the derivative of the subtree that has this Node at its root.
+     * Used internally within the class.
      * 
      * @param var - The variable to take the derivative with respect to.
      * 
@@ -96,7 +99,8 @@ public abstract class Function {
     /**
      * Determines the variables of which this Function is a function.
      * 
-     * @return A list containing the string representation of each variable in this function.
+     * @return A list containing the string representation of each variable in
+     *         this function.
      */
     public List<String> getVariables() {
         
@@ -202,7 +206,8 @@ public abstract class Function {
         if (first.precedence.compareTo(precedence) <= 0)
             str = "(" + str + ")";
         
-        // Check if this is a unary operator, which only has its first child populated.
+        // Check if this is a unary operator, which only has its first child
+        // populated.
         if (second == null)
             return value + "(" + str + ")";
         
@@ -229,6 +234,59 @@ public abstract class Function {
     
     
     /**
+     * Check if these two children are equal, with each having the possibility
+     * to be null.
+     * 
+     * @param thisChild One of the children to compare.
+     * @param otherChild The other child to compare.
+     * 
+     * @return True if the children are equal, false otherwise.
+     */
+    private boolean childEqual(Function thisChild, Function otherChild) {
+        boolean notNullEqual = thisChild != null && otherChild != null 
+                && thisChild.equals(otherChild);
+        boolean bothNull = thisChild == null && otherChild == null;
+        return notNullEqual || bothNull;
+    }
+    
+    
+    /**
+     * Check if this function and the other function have equal children
+     * in the same order.
+     * 
+     * @param other The other function.
+     * 
+     * @return True if the children have equal values in the same order, false
+     *         otherwise.
+     */
+    private boolean childrenExactlyEqual(Function other) {
+        boolean firstChildrenEqual = childEqual(getFirstChild(),
+                other.getFirstChild());
+        boolean secondChildrenEqual = childEqual(getSecondChild(),
+                other.getSecondChild());
+        return firstChildrenEqual && secondChildrenEqual;
+    }
+    
+    
+    /**
+     * Check if this function and the other function have equal children
+     * in the opposite order.
+     * 
+     * @param other The other function.
+     * 
+     * @return True if the children have equal values in the opposite order,
+     *         false otherwise.
+     */
+    private boolean childrenCommutativelyEqual(Function other) {
+        boolean firstChildrenEqual = childEqual(getFirstChild(),
+                other.getSecondChild());
+        boolean secondChildrenEqual = childEqual(getSecondChild(),
+                other.getFirstChild());
+        return firstChildrenEqual && secondChildrenEqual;
+    }
+    
+    
+    /**
      * Tests for equality between this and another Function.
      * 
      * @param other The other Function with which to determine equality.
@@ -237,33 +295,30 @@ public abstract class Function {
      */
     private boolean equalsFunction(Function other) {
         
-        // The two functions are exactly equal.
-        boolean equal = getValue().equals(other.getValue())
-                && ((getFirstChild() != null && other.getFirstChild() != null && getFirstChild().equals(other.getFirstChild()))
-                || (getFirstChild() == null && other.getFirstChild() == null))
-                && ((getSecondChild() != null && other.getSecondChild() != null && getSecondChild().equals(other.getSecondChild()))
-                || (getSecondChild() == null && other.getSecondChild() == null));
+        // Values are not equal, functions are not equal.
+        if (!getValue().equals(other.getValue()))
+            return false;
         
-        if (commutative) {
-            
-            // The two functions are not in the exact same form, but are still mathematically equal.
-            boolean commutativeEqual = getValue().equals(other.getValue())
-                    && ((getFirstChild() != null && other.getSecondChild() != null && getFirstChild().equals(other.getSecondChild()))
-                    || (getFirstChild() == null && other.getSecondChild() == null))
-                    && ((getSecondChild() != null && other.getFirstChild() != null && getSecondChild().equals(other.getFirstChild()))
-                    || (getSecondChild() == null && other.getFirstChild() == null));
-            
-            return equal || commutativeEqual;
+        // The two functions are exactly equal.
+        boolean childrenExactlyEqual = childrenExactlyEqual(other);
+        
+        // The two functions may not be in the exact same form, but could still
+        // be mathematically equal.
+        if (commutative && !childrenExactlyEqual) {
+            boolean childrenCommutativelyEqual 
+                    = childrenCommutativelyEqual(other);
+            return childrenExactlyEqual || childrenCommutativelyEqual;
         }
             
-        return equal;
+        return childrenExactlyEqual;
     }
     
     
     /**
-     * Precedence of different types of Nodes. Values on the left have a lower precedence than
-     * those on the right. NUMBER should always come last because for the purposes of this program,
-     * numbers have infinite precedence.
+     * Precedence of different types of Nodes. Values on the left have a lower
+     * precedence than those on the right. NUMBER should always come last
+     * because for the purposes of this program, numbers have infinite
+     * precedence.
      */
     public enum Precedence {
         ADDITION, MULTIPLICATION, EXPONENTIATION, TRIG, NUMBER; 

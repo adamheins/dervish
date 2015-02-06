@@ -8,8 +8,8 @@ import java.util.Set;
 import com.adamheins.diff.function.Function;
 
 /**
- * Verifies if a variable and its assigned value can be added to the map of variables without
- * causing a cycle.
+ * Verifies if a variable and its assigned value can be added to the map of 
+ * variables without causing a cycle.
  * 
  * @author Adam
  */
@@ -34,8 +34,8 @@ public class VariableVerifier {
     
     
     /**
-     * Verifies that the new variable and function do not cause an infinitely recursive loop with
-     * another variable.
+     * Verifies that the new variable and function do not cause an infinitely
+     * recursive loop with another variable.
      * 
      * @param var The new variable.
      * @param func The value of the new variable.

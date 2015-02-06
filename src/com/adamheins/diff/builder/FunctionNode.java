@@ -3,10 +3,21 @@ package com.adamheins.diff.builder;
 import com.adamheins.diff.function.Function;
 import com.adamheins.diff.function.Function.Associativity;
 
+/**
+ * A node that wraps a Function object so that it can be used placed into
+ * a tree structure using a FunctionBuilder object.
+ * 
+ * @author Adam
+ */
 class FunctionNode {
 
+    // The actual function itself.
     private Function function;
+    
+    // Parent node.
     private FunctionNode parent;
+    
+    // Depth within sets of brackets in the function.
     private int bracketDepth;
 
     
@@ -14,7 +25,8 @@ class FunctionNode {
      * Constructor.
      * 
      * @param function The Function that this node wraps.
-     * @param bracketDepth The number of sets of brackets in which this node is nested.
+     * @param bracketDepth The number of sets of brackets in which this node is
+     *         nested.
      */
     FunctionNode(Function function, int bracketDepth) {
         this.function = function;
@@ -48,13 +60,14 @@ class FunctionNode {
         else if (getFunction().getSecondChild() == child.getFunction())
             getFunction().setSecondChild(null);
         else
-            throw new RuntimeException("Parent does not have reference to child.");
+            throw new RuntimeException("Parent does not have reference to"
+                    + " child.");
     }
     
     
     /**
-     * Inserts a new parent for this node. If this node has an existing parent, the new parent
-     * becomes that node's child.
+     * Inserts a new parent for this node. If this node has an existing parent,
+     * the new parent becomes that node's child.
      * 
      * @param newParent The new parent node for this node.
      */
@@ -69,20 +82,23 @@ class FunctionNode {
     
     
     /**
-     * Compares the precedence of this Node and another. This takes into account the innate 
-     * precedence of the type of Node, as well as the bracket depth of the nodes. 
+     * Compares the precedence of this Node and another. This takes into account
+     * the innate precedence of the type of Node, as well as the bracket depth
+     * of the nodes. 
      * 
      * @param other The FunctionNode to which to compare this one.
      * 
-     * @return 0 if the nodes have equal precedence, a positive integer if this node has a higher 
-     *     precedence, or a negative integer is this node has lower precedence.
+     * @return 0 if the nodes have equal precedence, a positive integer if this
+     *         node has a higher precedence, or a negative integer is this node
+     *         has lower precedence.
      */
     private int comparePrecedence(FunctionNode other) {       
         if (getBracketDepth() > other.getBracketDepth())
             return 1;
         if (getBracketDepth() < other.getBracketDepth())
             return -1;
-        return (getFunction().getPrecedence().compareTo(other.getFunction().getPrecedence()));
+        return (getFunction().getPrecedence().compareTo(other.getFunction()
+                .getPrecedence()));
     }
     
     
@@ -112,16 +128,20 @@ class FunctionNode {
                         
             FunctionNode greatParent = this;
             
-            // Nodes with left associativity evaluate left to right. Therefore, if the parent has 
-            // the same precedence as the child, the child swaps with it. The parent ends up lower
-            // in the tree, and is thus evaluated first.
-            if (newNode.getFunction().getAssociativity() == Associativity.LEFT) {
+            // Nodes with left associativity evaluate left to right. Therefore,
+            // if the parent has the same precedence as the child, the child
+            // swaps with it. The parent ends up lower in the tree, and is thus
+            // evaluated first.
+            if (newNode.getFunction().getAssociativity()
+                    == Associativity.LEFT) {
                 while (greatParent.getParent() != null 
-                        && greatParent.getParent().comparePrecedence(newNode) >= 0)
+                        && greatParent.getParent().comparePrecedence(newNode)
+                        >= 0)
                     greatParent = greatParent.getParent();
             } else {                
                 while (greatParent.getParent() != null 
-                        && greatParent.getParent().comparePrecedence(newNode) > 0)
+                        && greatParent.getParent().comparePrecedence(newNode)
+                        > 0)
                     greatParent = greatParent.getParent();
             }            
             greatParent.insertParent(newNode);

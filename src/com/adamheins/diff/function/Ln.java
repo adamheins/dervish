@@ -1,5 +1,6 @@
 package com.adamheins.diff.function;
 
+import java.math.RoundingMode;
 import java.util.Map;
 
 import org.apfloat.Apfloat;
@@ -8,7 +9,7 @@ import org.apfloat.ApfloatMath;
 public class Ln extends Log {
 
     public Ln() {
-        super("2.718281828459045", "ln");
+        super(Number.E.getValue().toString(), "ln");
     }
     
     
@@ -18,7 +19,10 @@ public class Ln extends Log {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            return new Number(ApfloatMath.log((Apfloat)child.getValue()));
+            
+            // Last digit needs to be rounded to get rid of imprecision errors.
+            Apfloat value = ((Apfloat)child.getValue());
+            return new Number(ApfloatMath.round(ApfloatMath.log(value), PRECISION - 1, RoundingMode.HALF_UP));
         }
 
         Function me = new Ln();

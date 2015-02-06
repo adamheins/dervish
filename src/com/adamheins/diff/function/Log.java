@@ -13,7 +13,7 @@ public class Log extends Function {
     
     public Log(String base) {
         super("log<" + base + ">", Precedence.EXPONENTIATION, Associativity.RIGHT, false);
-        this.base = new Apfloat(base, PRECISION + 1);
+        this.base = new Apfloat(base, PRECISION);
     }
     
     // Internal use.
@@ -26,7 +26,7 @@ public class Log extends Function {
     // Internal use.
     protected Log(String base, String value) {
         super(value, Precedence.EXPONENTIATION, Associativity.RIGHT, false);
-        this.base = new Apfloat(base, PRECISION + 1);
+        this.base = new Apfloat(base, PRECISION);
     }
 
 
@@ -37,9 +37,9 @@ public class Log extends Function {
         
         if (child instanceof Number) {
 
-            // Hacky way of dealing with precision problems.
-            Apfloat value = ((Apfloat)child.getValue()).precision(PRECISION + 1);
-            return new Number(ApfloatMath.round(ApfloatMath.log(value, base), PRECISION, RoundingMode.HALF_UP));
+            // Last digit needs to be rounded to get rid of imprecision errors.
+            Apfloat value = ((Apfloat)child.getValue());
+            return new Number(ApfloatMath.round(ApfloatMath.log(value, base), PRECISION - 1, RoundingMode.HALF_UP));
         }
         
         Function me = new Log(base);

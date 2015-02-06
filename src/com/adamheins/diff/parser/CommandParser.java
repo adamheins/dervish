@@ -28,14 +28,18 @@ public class CommandParser {
     // Keywords, which cannot be the names of variables.
     private static final List<String> KEYWORDS = Arrays.asList("use", "forget", 
             "eval", "sub", "diff", "help", "exit", "set", "clear", "show", 
-            "log", "ln", "sin", "cos", "tan");
+            "log", "ln", "sin", "cos", "tan", "e", "pi");
     
     // String representing the 'last' variable.
     private final String LAST = "$";
     
+    // Text to display when the user enters 'help' in the console.
     private String HELP_TEXT;
     
     
+    /**
+     * Creates a new CommandParser object.
+     */
     public CommandParser() {
         varMap = new HashMap<String, Function>();
         varList = new ArrayList<String>();
@@ -43,7 +47,8 @@ public class CommandParser {
         
         // Load text from help file.
         try {
-            HELP_TEXT = (new String(Files.readAllBytes(Paths.get("help.txt")))).trim();
+            HELP_TEXT = (new String(Files.readAllBytes(Paths.get("help.txt"))))
+                    .trim();
         } catch (IOException e) {
             HELP_TEXT = "Help file could not be loaded.";
         }
@@ -157,7 +162,8 @@ public class CommandParser {
         Map<String, Function> varSubMap = new HashMap<String, Function>();
         for (int i = 0; i < tokens.size(); ++i) {
             if (!varMap.containsKey(tokens.get(i)))
-                throw new ParsingException("Variable '" + tokens.get(i) + "' has no value.");
+                throw new ParsingException("Variable '" + tokens.get(i) 
+                        + "' has no value.");
             varSubMap.put(tokens.get(i), varMap.get(tokens.get(i)));
         }
         
@@ -189,7 +195,8 @@ public class CommandParser {
         FunctionParser fp = new FunctionParser(varList);
         Function function = fp.parse(funcStr);
         
-        // If the LAST value exists, substitute it. The LAST variable is always substituted.
+        // If the LAST value exists, substitute it. The LAST variable is always
+        // substituted.
         if (varMap.containsKey(LAST))
             function = function.evaluate(getLastVariableMap());
         
@@ -212,7 +219,8 @@ public class CommandParser {
     private String diff(List<String> tokens) throws ParsingException {
         
         if (tokens.size() < 3)
-            throw new ParsingException("Missing argument(s): diff <function> <variable>.");
+            throw new ParsingException("Missing argument(s): diff <function>"
+                    + " <variable>.");
         
         String funcStr = tokens.get(1);
         
@@ -244,16 +252,19 @@ public class CommandParser {
     private void set(List<String> tokens) throws ParsingException {
         
         if (tokens.size() < 3)
-            throw new ParsingException("Missing argument(s): set <variable> <function>.");
+            throw new ParsingException("Missing argument(s): set <variable>"
+                    + " <function>.");
         
         if (!varList.contains(tokens.get(1)))
-            throw new ParsingException("Unknown variable! Declare variables with 'use <variable(s)>' first.");
+            throw new ParsingException("Unknown variable! Declare variables"
+                    + " with 'use <variable(s)>' first.");
         
         String var = tokens.get(1);
         String funcStr = tokens.get(2);
         
-        // Evaluate subsequent commands. The 'set' command allows other commands to be chained after
-        // it, such that the user can assign variables to a derivative of a function easily in
+        // Evaluate subsequent commands. The 'set' command allows other commands
+        // to be chained after it, such that the user can assign variables to a 
+        // derivative of a function easily in
         // one line.
         if (tokens.size() > 3) {
             tokens.remove(0);
@@ -275,8 +286,9 @@ public class CommandParser {
     
     
     /**
-     * Command to clear the values of all variables. This does not remove them from the list of
-     * variables being used by the program. Use the 'forget' command for that.
+     * Command to clear the values of all variables. This does not remove them 
+     * from the list of variables being used by the program. Use the 'forget' 
+     * command for that.
      * 
      * @param tokens List of tokens from the command string.
      * 
@@ -285,7 +297,8 @@ public class CommandParser {
     private void clear(List<String> tokens) throws ParsingException {
         
         if (tokens.size() < 2)
-            throw new ParsingException("Missing argument: clear <variables(s)>.");
+            throw new ParsingException("Missing argument: clear" 
+                    + " <variables(s)>.");
         
         // Remove the 'clear' token so we can iterate over all tokens later.
         tokens.remove(0);
@@ -312,8 +325,8 @@ public class CommandParser {
     
     
     /**
-     * Creates a list of specified variables being used by the program and their values, if they
-     * have any.
+     * Creates a list of specified variables being used by the program and their
+     * values, if they have any.
      * 
      * @param tokens List of tokens from the command string.
      * 
@@ -321,8 +334,8 @@ public class CommandParser {
      */
     private String show(List<String> tokens) {
         
-        // Response to the show command. Variables without values are listed first, and then
-        // variables with values.
+        // Response to the show command. Variables without values are listed
+        // first, and then variables with values.
         String response = "";
         
         // No variables are defined, return empty string.
@@ -354,7 +367,8 @@ public class CommandParser {
         } else {
             for (Map.Entry<String, Function> entry : varMap.entrySet()) {
                 if (tokens.contains(entry.getKey()))
-                    response += entry.getKey() + " = " + entry.getValue() + "\n";
+                    response += entry.getKey() + " = " + entry.getValue()
+                            + "\n";
             }
         }
 
@@ -412,7 +426,8 @@ public class CommandParser {
      */
     public String parse(String command) throws ParsingException {
         
-        List<String> tokens = stringArrayToList(command.toLowerCase().split(" "));
+        List<String> tokens = stringArrayToList(command.toLowerCase()
+                .split(" "));
         
         if (tokens.size() == 0)
             return "";

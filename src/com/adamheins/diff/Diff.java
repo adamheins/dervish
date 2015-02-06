@@ -45,13 +45,16 @@ public class Diff {
             while ((input = reader.readLine()) != null) {
 
                 // Stop execution after user enters 'exit'.
-                if (input.length() >= 4 && input.substring(0, 4).toLowerCase().equals("exit"))
+                if (input.length() >= 4 && input.substring(0, 4).toLowerCase()
+                        .equals("exit"))
                     break;
                 try {
                     String result = parser.parse(input);
                     if (!result.equals(""))
                         System.out.println(result);
                 } catch (ParsingException e) {
+                    System.out.println(e.getMessage());
+                } catch (ArithmeticException e) {
                     System.out.println(e.getMessage());
                 }
 

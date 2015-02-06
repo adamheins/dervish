@@ -8,6 +8,9 @@ public class Number extends Function {
     
     public static final Number ZERO = new Number(Apfloat.ZERO);
     public static final Number ONE = new Number(Apfloat.ONE);
+    
+    public static final Number E = new Number("2.71828182845904523536");
+    public static final Number PI = new Number("3.14159265358979323846");
    
 
     public Number(String value) {
