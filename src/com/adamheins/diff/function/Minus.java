@@ -4,6 +4,11 @@ import java.util.Map;
 
 import org.apfloat.Apfloat;
 
+/**
+ * Subtraction operator.
+ * 
+ * @author Adam
+ */
 public class Minus extends Function {
 
     public Minus() {
@@ -22,7 +27,8 @@ public class Minus extends Function {
         if (first instanceof Number && second instanceof Number) {
             Apfloat firstValue = (Apfloat)first.getValue();
             Apfloat secondValue = (Apfloat)second.getValue();
-            return new Number(firstValue.subtract(secondValue));
+            Apfloat result = firstValue.subtract(secondValue);
+            return new Number(result);
         }
         
         if (first.equals(Number.ZERO)) {

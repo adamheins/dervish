@@ -101,10 +101,10 @@ public class FunctionParser {
                 index++;
                 continue;
             } else if (functionString.charAt(index) == 'e') {
-                func = Number.E;
+                func = Constant.E;
                 index++;
             } else if (substringAt(functionString, "pi", index)) {
-                func = Number.PI;
+                func = Constant.PI;
                 index += 2;
             }else if (isNumber(functionString.charAt(index))) {
                 int start = index;

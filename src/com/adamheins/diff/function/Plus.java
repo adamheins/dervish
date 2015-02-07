@@ -4,6 +4,11 @@ import java.util.Map;
 
 import org.apfloat.Apfloat;
 
+/**
+ * Addition operator.
+ * 
+ * @author Adam
+ */
 public class Plus extends Function {
 
     public Plus() {

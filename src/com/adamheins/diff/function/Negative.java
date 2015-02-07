@@ -4,6 +4,11 @@ import java.util.Map;
 
 import org.apfloat.Apfloat;
 
+/**
+ * Negation operator.
+ * 
+ * @author Adam
+ */
 public class Negative extends Function {
 
     public Negative() {
@@ -41,5 +46,4 @@ public class Negative extends Function {
     public String toString() {
         return "-(" + getFirstChild().toString() + ")";
     }
-
 }

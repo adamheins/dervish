@@ -4,6 +4,11 @@ import java.util.Map;
 
 import org.apfloat.Apfloat;
 
+/**
+ * Multiplication operator.
+ * 
+ * @author Adam
+ */
 public class Multiply extends Function {
 
     public Multiply() {
@@ -22,10 +27,10 @@ public class Multiply extends Function {
         if (first instanceof Number && second instanceof Number) {
             Apfloat firstVal = (Apfloat)first.getValue();
             Apfloat secondVal = (Apfloat)second.getValue();
-            return new Number(firstVal.multiply(secondVal));
+            Apfloat result = firstVal.multiply(secondVal);
+            return new Number(result);
         }
         
-        // If one of the children is equal to zero, there is no point having it in the expression.
         if (first.equals(Number.ZERO) || second.equals(Number.ZERO)) {
             return Number.ZERO;
         } else if (first.equals(Number.ONE)) {

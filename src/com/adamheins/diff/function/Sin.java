@@ -5,6 +5,11 @@ import java.util.Map;
 import org.apfloat.Apfloat;
 import org.apfloat.ApfloatMath;
 
+/**
+ * Trigonometic sine operator.
+ * 
+ * @author Adam
+ */
 public class Sin extends Function {
 
     public Sin() {
@@ -18,7 +23,8 @@ public class Sin extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            return new Number(ApfloatMath.sin((Apfloat)child.getValue()));
+            Apfloat result = ApfloatMath.sin((Apfloat)child.getValue());
+            return new Number(precisionRound(result));
         }
         
         Function me = new Sin();

@@ -1,19 +1,34 @@
 package com.adamheins.diff.function;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/** Parent for all types of math nodes. */
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
+
+/**
+ * Base class for all function types.
+ * 
+ * @author Adam
+ */
 public abstract class Function {
     
     // Precision of the results of operations that generate less precise results
     // than the operands. One example is division, which can take
     // infinite-precision integers and produce finite-precision fractional
-    // numbers.
-    protected static final int PRECISION = 20;
+    // numbers. This is the precision that values retain internally.
+    protected static final int INTERNAL_PRECISION = 21;
+    
+    // Outward-facing precision. This is the lowest possible precision to
+    // which the external user may be exposed.
+    protected static final int EXTERNAL_PRECISION = 20;
+    
+    // The rounding mode for numbers that need rounding.
+    protected static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
     
     // True if the Apfloat values used internally are formatted to be 'pretty',
     // false otherwise.
@@ -311,6 +326,20 @@ public abstract class Function {
         }
             
         return childrenExactlyEqual;
+    }
+    
+    
+    /**
+     * Rounds the value to eliminate floating point imprecisions. Then set the
+     * precision back to the original.
+     * 
+     * @param result The value to round.
+     * 
+     * @return The rounded value.
+     */
+    protected Apfloat precisionRound(Apfloat result) {
+        return ApfloatMath.round(result, EXTERNAL_PRECISION, ROUNDING_MODE)
+                .precision(INTERNAL_PRECISION);
     }
     
     

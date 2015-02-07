@@ -4,6 +4,11 @@ import java.util.Map;
 
 import org.apfloat.Apfloat;
 
+/**
+ * Division operator.
+ * 
+ * @author Adam
+ */
 public class Divide extends Function {
 
     public Divide() {
@@ -20,7 +25,8 @@ public class Divide extends Function {
         if (first instanceof Number && second instanceof Number) {
             Apfloat firstValue = (Apfloat)first.getValue();
             Apfloat secondValue = (Apfloat)second.getValue();
-            return new Number(firstValue.divide(secondValue));
+            Apfloat result = firstValue.divide(secondValue);
+            return new Number(result);
         }
         
         if (second.equals(Number.ONE)) {
@@ -64,5 +70,4 @@ public class Divide extends Function {
         
         return derivative;
     }
-
 }

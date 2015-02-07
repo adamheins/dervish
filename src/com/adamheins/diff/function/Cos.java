@@ -5,18 +5,25 @@ import java.util.Map;
 import org.apfloat.Apfloat;
 import org.apfloat.ApfloatMath;
 
+/**
+ * Trigonometric cosine operator.
+ * 
+ * @author Adam
+ */
 public class Cos extends Function {
 
     public Cos() {
         super("cos", Precedence.TRIG, Associativity.RIGHT, false);
     }
 
+    
     @Override
     public Function evaluate(Map<String, Function> varMap) {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-            return new Number(ApfloatMath.cos((Apfloat)child.getValue()));
+            Apfloat result = ApfloatMath.cos((Apfloat)child.getValue());
+            return new Number(precisionRound(result));
         }
         
         Function me = new Cos();

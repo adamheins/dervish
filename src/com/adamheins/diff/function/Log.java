@@ -1,32 +1,37 @@
 package com.adamheins.diff.function;
 
-import java.math.RoundingMode;
 import java.util.Map;
 
 import org.apfloat.Apfloat;
 import org.apfloat.ApfloatMath;
 
+/**
+ * Logarithm operator.
+ * 
+ * @author Adam
+ */
 public class Log extends Function {
 
     // The base of the logarithm.
     Apfloat base;
     
     public Log(String base) {
-        super("log<" + base + ">", Precedence.EXPONENTIATION, Associativity.RIGHT, false);
-        this.base = new Apfloat(base, PRECISION);
+        super("log<" + base + ">", Precedence.EXPONENTIATION, 
+                Associativity.RIGHT, false);
+        this.base = new Apfloat(base, INTERNAL_PRECISION);
     }
     
-    // Internal use.
+    
     private Log(Apfloat base) {
-        super("log<" + base.toString(PRETTY) + ">", Precedence.EXPONENTIATION, Associativity.RIGHT, false);
+        super("log<" + base.toString(PRETTY) + ">", Precedence.EXPONENTIATION,
+                Associativity.RIGHT, false);
         this.base = base;
     }
     
     
-    // Internal use.
     protected Log(String base, String value) {
         super(value, Precedence.EXPONENTIATION, Associativity.RIGHT, false);
-        this.base = new Apfloat(base, PRECISION);
+        this.base = new Apfloat(base, INTERNAL_PRECISION);
     }
 
 
@@ -36,10 +41,9 @@ public class Log extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if (child instanceof Number) {
-
-            // Last digit needs to be rounded to get rid of imprecision errors.
             Apfloat value = ((Apfloat)child.getValue());
-            return new Number(ApfloatMath.round(ApfloatMath.log(value, base), PRECISION - 1, RoundingMode.HALF_UP));
+            Apfloat result = ApfloatMath.log(value, base);
+            return new Number(precisionRound(result));
         }
         
         Function me = new Log(base);
@@ -62,5 +66,4 @@ public class Log extends Function {
         
         return derivative;
     }
-
 }

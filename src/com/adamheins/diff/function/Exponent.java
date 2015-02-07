@@ -5,6 +5,11 @@ import java.util.Map;
 import org.apfloat.Apfloat;
 import org.apfloat.ApfloatMath;
 
+/**
+ * Exponentiation operator.
+ * 
+ * @author Adam
+ */
 public class Exponent extends Function {
 
     public Exponent() {
@@ -21,7 +26,8 @@ public class Exponent extends Function {
         if (first instanceof Number && second instanceof Number) {
             Apfloat firstValue = (Apfloat)first.getValue();
             Apfloat secondValue = (Apfloat)second.getValue();
-            return new Number(ApfloatMath.pow(firstValue, secondValue));
+            Apfloat result = ApfloatMath.pow(firstValue, secondValue);
+            return new Number(precisionRound(result));
         }
         
         if (second.equals(Number.ZERO)) {
@@ -45,8 +51,8 @@ public class Exponent extends Function {
     @Override
     public Function differentiateInternal(String var) {
         
-        // Formula for d/dx( f(x)^g(x) ):
-        // f(x)^g(x) * d/dx( g(x) ) * ln( f(x) ) + f(x)^( g(x)-1 ) * g(x) * d/dx( f(x) )
+        // Formula for d/dx(f(x)^g(x)):
+        // f(x)^g(x)*d/dx(g(x))*ln(f(x))+f(x)^(g(x)-1)*g(x)*d/dx(f(x))
         
         Function first = getFirstChild().evaluate();
         Function second = getSecondChild().evaluate();
@@ -93,5 +99,4 @@ public class Exponent extends Function {
         
         return derivative;
     }
-
 }

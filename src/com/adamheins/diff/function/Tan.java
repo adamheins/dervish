@@ -5,6 +5,11 @@ import java.util.Map;
 import org.apfloat.Apfloat;
 import org.apfloat.ApfloatMath;
 
+/**
+ * Trigonometric tangent operator.
+ * 
+ * @author Adam
+ */
 public class Tan extends Function {
 
     public Tan() {
@@ -17,7 +22,8 @@ public class Tan extends Function {
         Function child = getFirstChild().evaluate(varMap);
         
         if(child instanceof Number) {
-            return new Number(ApfloatMath.tan((Apfloat)child.getValue()));
+            Apfloat result = ApfloatMath.tan((Apfloat)child.getValue());
+            return new Number(precisionRound(result));
         }
         
         Function me = new Tan();

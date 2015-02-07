@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.adamheins.diff.builder.FunctionBuilder;
+import com.adamheins.diff.function.Constant;
 import com.adamheins.diff.function.Cos;
 import com.adamheins.diff.function.Divide;
 import com.adamheins.diff.function.Exponent;
@@ -403,7 +404,7 @@ public class BuilderTests {
     public void testExpDiffIsSelf() {
         
         FunctionBuilder fb = new FunctionBuilder();
-        fb.add(Number.E, 0);
+        fb.add(Constant.E, 0);
         fb.add(new Exponent(), 0);
         fb.add(new Variable("x"), 0);
         
@@ -418,7 +419,7 @@ public class BuilderTests {
     public void testSinPi() throws ParsingException {
         FunctionBuilder fb = new FunctionBuilder();
         fb.add(new Sin(), 0);
-        fb.add(Number.PI, 0);
+        fb.add(Constant.PI, 0);
         
         Function actual = fb.getFunction();
         Function expected = Number.ZERO;
@@ -431,7 +432,7 @@ public class BuilderTests {
     public void testSinPiOverTwo() throws ParsingException {
         FunctionBuilder fb = new FunctionBuilder();
         fb.add(new Sin(), 0);
-        fb.add(Number.PI, 1);
+        fb.add(Constant.PI, 1);
         fb.add(new Divide(), 1);
         fb.add(new Number("2"), 1);
         
@@ -446,7 +447,7 @@ public class BuilderTests {
     public void testCosPi() throws ParsingException {
         FunctionBuilder fb = new FunctionBuilder();
         fb.add(new Cos(), 0);
-        fb.add(Number.PI, 0);
+        fb.add(Constant.PI, 0);
         
         Function actual = fb.getFunction();
         Function expected = new Number("-1");
@@ -459,7 +460,7 @@ public class BuilderTests {
     public void testTanPi() throws ParsingException {
         FunctionBuilder fb = new FunctionBuilder();
         fb.add(new Tan(), 0);
-        fb.add(Number.PI, 0);
+        fb.add(Constant.PI, 0);
         
         Function actual = fb.getFunction();
         Function expected = Number.ZERO;

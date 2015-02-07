@@ -83,10 +83,10 @@ public class CommandParser {
         
         // Throw exception if keywords were used as variable names.
         if (!illegalVariables.isEmpty()) {
-            String msg = "Variable names ";
+            String msg = "Variable name(s) ";
             for (String var : illegalVariables)
                 msg += "'" + var + "',";
-            msg += "are reserved keywords and cannot be used as variables.";
+            msg += " are reserved keywords and cannot be used as variables.";
             throw new ParsingException(msg);
         }
     }
