@@ -6,7 +6,7 @@ import org.apfloat.Apfloat;
 
 /**
  * Negation operator.
- * 
+ *
  * @author Adam
  */
 public class Negative extends Function {
@@ -18,16 +18,16 @@ public class Negative extends Function {
 
     @Override
     public Function evaluate(Map<String, Function> varMap) {
-        
+
         Function child = getFirstChild().evaluate(varMap);
-        
+
         if (child instanceof Number) {
             return new Number(((Apfloat) child.getValue()).negate());
         }
-        
+
         Function me = new Negative();
         me.setFirstChild(child);
-        
+
         return me;
     }
 
@@ -40,8 +40,8 @@ public class Negative extends Function {
         derivative.setFirstChild(childDer);
         return derivative;
     }
-    
-    
+
+
     @Override
     public String toString() {
         return "-(" + getFirstChild().toString() + ")";

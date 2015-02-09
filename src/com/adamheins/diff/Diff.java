@@ -12,16 +12,16 @@ import com.adamheins.diff.parser.ParsingException;
 
 /**
  * Entry point for the interactive program.
- * 
+ *
  * @author Adam
  */
 public class Diff {
-        
+
     public static void main(String args[]) {
-        
+
         // If there is an arg, it should be a file name.
         boolean fromFile = args.length > 0;
-        
+
         // Create a reader for either stdin or a file.
         BufferedReader reader = null;
         if (fromFile)
@@ -32,12 +32,12 @@ public class Diff {
             }
         else
             reader = new BufferedReader(new InputStreamReader(System.in));
-        
+
         try {
-            
+
             String input;
             CommandParser parser = new CommandParser();
-            
+
             if (!fromFile) {
                 System.out.println("Function Shell");
                 System.out.print("> ");
