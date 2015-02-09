@@ -6,6 +6,7 @@
   <property name="classes.dir" value="${build.dir}/classes"/>
   <property name="jar.dir" value="${build.dir}/jar"/>
   <property name="lib.dir" value="lib"/>
+  <property name="results.dir" value="${build.dir}/results"/>
 
   <property name="main-class" value="com.adamheins.diff.Diff"/>
 
@@ -27,18 +28,19 @@
 
   <!-- Execute unit tests. -->
   <target name="test" depends="compile">
+    <mkdir dir="${results.dir}"/>
     <junit printsummary="yes" haltonfailure="no">
       <classpath>
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
         <pathelement location="${classes.dir}"/>
       </classpath>
-      <test name="com.adamheins.diff.test.BuilderTests" outfile="builder-result">
+      <test name="com.adamheins.diff.test.BuilderTests" outfile="${results.dir}/builder-result">
         <formatter type="plain"/>
       </test>
-      <test name="com.adamheins.diff.test.FunctionParserTests" outfile="fp-result">
+      <test name="com.adamheins.diff.test.FunctionParserTests" outfile="${results.dir}/fp-result">
         <formatter type="plain"/>
       </test>
-      <test name="com.adamheins.diff.test.CommandParserTests" outfile="cp-result">
+      <test name="com.adamheins.diff.test.CommandParserTests" outfile="${results.dir}/cp-result">
         <formatter type="plain"/>
       </test>
     </junit>
