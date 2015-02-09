@@ -2,7 +2,11 @@
 A simple command line tool that allows for evaluation and differentiation of mathematical functions. The tool can also interpret a text file.
 
 ## Installation
-TODO
+To just get the application, download and run the jar file located at `build/jar/Diff.jar`.
+
+Alternatively, you can compile and run the code yourself. This project uses Apache Ant for building, which can be be downloaded [here](http://ant.apache.org/bindownload.cgi). Clone this repo and use `ant clean-build` to package the project into a jar.
+
+The jar can then be run using `java -jar build/jar/Diff.jar`.
 
 ## Commands
 <pre>
@@ -25,6 +29,7 @@ diff &lt;expression&gt; &lt;variable&gt;    Calculates the derivative of the exp
 help                            Lists descriptions of all commands.
 exit                            Exit the program.
 </pre>
+
 ## Guide
 All arguments and commands are separated by spaces. This also means that you cannot put any spaces in a function.
 
