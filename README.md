@@ -1,12 +1,12 @@
-# Diff
+# Dervish
 A simple command line tool that allows for evaluation and differentiation of mathematical functions. The tool can also interpret a text file.
 
 ## Installation
-To just get the application, download and run the jar file located at `build/jar/Diff.jar`.
+To just get the application, download and run the jar file located at `build/jar/Dervish.jar`.
 
 Alternatively, you can compile and run the code yourself. This project uses Apache Ant for building, which can be be downloaded [here](http://ant.apache.org/bindownload.cgi). Clone this repo and use `ant clean-build` to package the project into a jar.
 
-The jar can then be run using `java -jar build/jar/Diff.jar`.
+The jar can then be run using `java -jar build/jar/Dervish.jar`.
 
 ## Commands
 <pre>

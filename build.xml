@@ -1,4 +1,4 @@
-<project name="Diff" basedir="." default="main">
+<project name="Dervish" basedir="." default="main">
 
   <property name="src.dir" value="src"/>
 
@@ -8,7 +8,7 @@
   <property name="lib.dir" value="lib"/>
   <property name="results.dir" value="${build.dir}/results"/>
 
-  <property name="main-class" value="com.adamheins.diff.Diff"/>
+  <property name="main-class" value="com.adamheins.dervish.Dervish"/>
 
   <!-- Add external libraries to the classpath. -->
   <path id="classpath">
@@ -34,13 +34,13 @@
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
         <pathelement location="${classes.dir}"/>
       </classpath>
-      <test name="com.adamheins.diff.test.BuilderTests" outfile="${results.dir}/builder-result">
+      <test name="com.adamheins.dervish.test.BuilderTests" outfile="${results.dir}/builder-result">
         <formatter type="plain"/>
       </test>
-      <test name="com.adamheins.diff.test.FunctionParserTests" outfile="${results.dir}/fp-result">
+      <test name="com.adamheins.dervish.test.FunctionParserTests" outfile="${results.dir}/fp-result">
         <formatter type="plain"/>
       </test>
-      <test name="com.adamheins.diff.test.CommandParserTests" outfile="${results.dir}/cp-result">
+      <test name="com.adamheins.dervish.test.CommandParserTests" outfile="${results.dir}/cp-result">
         <formatter type="plain"/>
       </test>
     </junit>
