@@ -1,0 +1,35 @@
+Testsuite: com.adamheins.dervish.test.BuilderTests
+Tests run: 32, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.347 sec
+
+Testcase: testMinusIntegers took 0.047 sec
+Testcase: testDifferentiateOneVariable took 0 sec
+Testcase: testAdditionOneVariable took 0.001 sec
+Testcase: testDifferentiateAddition took 0 sec
+Testcase: testNegativeAndNumber took 0 sec
+Testcase: testDivideFloats took 0.007 sec
+Testcase: testAdditionIntegers took 0 sec
+Testcase: testCosPi took 0.01 sec
+Testcase: testLog10 took 0.087 sec
+Testcase: testSinPi took 0.001 sec
+Testcase: testTanPi took 0 sec
+Testcase: testAdditionZeroTerm took 0 sec
+Testcase: testDifferentiateOneNumber took 0.001 sec
+Testcase: testSinPiOverTwo took 0.091 sec
+Testcase: testMultiplyIntegers took 0 sec
+Testcase: testMinusFloats took 0 sec
+Testcase: testDivideIntegersNonMultiples took 0 sec
+Testcase: testExponentBaseZero took 0.001 sec
+Testcase: testExpDiffIsSelf took 0.009 sec
+Testcase: testMultiplyFloats took 0 sec
+Testcase: testAdditionTwoZeros took 0.001 sec
+Testcase: testNegativeAfterOperator took 0 sec
+Testcase: testExponentFloats took 0.038 sec
+Testcase: testAdditionTwoVariables took 0 sec
+Testcase: testAdditionFloats took 0 sec
+Testcase: testMultiplyZero took 0 sec
+Testcase: testBuildOneNumber took 0 sec
+Testcase: testExponentBaseOne took 0 sec
+Testcase: testDivideIntegers took 0 sec
+Testcase: testExponentIntegers took 0.033 sec
+Testcase: testDifferentiateSimplePolynomial took 0 sec
+Testcase: testExponentZero took 0 sec

@@ -7,6 +7,7 @@
   <property name="jar.dir" value="${build.dir}/jar"/>
   <property name="lib.dir" value="lib"/>
   <property name="results.dir" value="${build.dir}/results"/>
+  <property name="res.dir" value="res"/>
 
   <property name="main-class" value="com.adamheins.dervish.Dervish"/>
 
@@ -54,12 +55,13 @@
         <attribute name="Main-Class" value="${main-class}"/>
       </manifest>
       <zipfileset includes="**/*.class" src="${lib.dir}/apfloat.jar"/>
+      <zipfileset dir="${res.dir}"/>
     </jar>
   </target>
 
   <!-- Runs the jar file. -->
   <target name="run" depends="jar">
-    <java fork="true" classname="${main-class}">
+    <java classname="${main-class}">
       <classpath>
         <path refid="classpath"/>
         <path location="${jar.dir}/${ant.project.name}.jar"/>

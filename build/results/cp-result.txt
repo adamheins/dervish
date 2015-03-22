@@ -1,0 +1,22 @@
+Testsuite: com.adamheins.dervish.test.CommandParserTests
+Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 sec
+
+Testcase: testParseCommandUseMultiCharVars took 0.005 sec
+Testcase: testParseCommandUseSingleCharVars took 0 sec
+Testcase: testParseCommandEvalNumbers took 0 sec
+Testcase: testParseCommandSubNoVarArgs took 0.001 sec
+Testcase: testParseCommandForgetAll took 0.001 sec
+Testcase: testParseCommandSet took 0 sec
+Testcase: testParseCommandSub took 0 sec
+Testcase: testParseCommandSetToDerivative took 0 sec
+Testcase: testLASTVarDefined took 0.001 sec
+Testcase: testParseCommandSubAllMultiVars took 0 sec
+Testcase: testParseCommandForget took 0.001 sec
+Testcase: testLASTVarUndefined took 0 sec
+Testcase: testParseCommandClear took 0.001 sec
+Testcase: testParseCommandDiff took 0 sec
+Testcase: testParseCommandEvalNumber took 0 sec
+Testcase: testParseCommandSubMultiVarsOneUndefined took 0 sec
+Testcase: testParseCommandEvalLargeNumber took 0.001 sec
+Testcase: testParseCommandClearAll took 0 sec
+Testcase: testParseCommandEvalWithVar took 0.001 sec

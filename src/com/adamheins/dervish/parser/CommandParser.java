@@ -54,7 +54,7 @@ public class CommandParser {
 
         // Load text from help file.
         try {
-            HELP_TEXT = (new String(Files.readAllBytes(Paths.get("help.txt"))))
+            HELP_TEXT = (new String(Files.readAllBytes(Paths.get("res/help.txt"))))
                     .trim();
         } catch (IOException e) {
             HELP_TEXT = "Help file could not be loaded.";

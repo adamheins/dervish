@@ -1,0 +1,24 @@
+Testsuite: com.adamheins.dervish.test.FunctionParserTests
+Tests run: 21, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.087 sec
+
+Testcase: testParseDivide took 0.001 sec
+Testcase: testParseFloat took 0.001 sec
+Testcase: testParseLn took 0 sec
+Testcase: testParsePi took 0 sec
+Testcase: testParseComplexBrackets took 0.026 sec
+Testcase: testParseBracketedNumber took 0 sec
+Testcase: testParseExponent took 0.022 sec
+Testcase: testParseVariable took 0.001 sec
+Testcase: testParseAddition took 0 sec
+Testcase: testParseNegativeNumber took 0 sec
+Testcase: testParseSubtraction took 0 sec
+Testcase: testParseInteger took 0 sec
+Testcase: testParseComplexBrackets2 took 0 sec
+Testcase: testParseComplexBrackets3 took 0.032 sec
+Testcase: testParseBrackets took 0 sec
+Testcase: testParseE took 0 sec
+Testcase: testParseMultiply took 0 sec
+Testcase: testParseCos took 0 sec
+Testcase: testParseLog took 0 sec
+Testcase: testParseSin took 0 sec
+Testcase: testParseTan took 0 sec
